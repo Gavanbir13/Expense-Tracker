@@ -4,21 +4,76 @@ const settingsBtn = document.getElementById("settingsBtn");
 
 const content = document.getElementById("content");
 
+homeBtn.onclick = function() {
+    showHome();
+};
+
+
+/* ============================= */
+/* TEMPORARY EXPENSE DATA */
+/* ============================= */
+
+let expenses = [];
+
 
 /* ============================= */
 /* HOME */
 /* ============================= */
 
-homeBtn.onclick = function() {
+function showHome(successMessage = "") {
 
     content.innerHTML = `
-        <div class="new-expense-bar">
-            <div class="plus-sign">+</div>
-            <div>New Expense</div>
+    
+        <div class="home-expense-bars">
+
+            <div class="new-expense-bar" id="newExpenseBar">
+
+                <div class="plus-sign">+</div>
+
+                <div>New Expense</div>
+
+            </div>
+
+
+            <div class="new-expense-bar" id="expenseHistoryBar">
+
+                <div class="plus-sign">$</div>
+
+                <div>Expense History</div>
+
+            </div>
+
         </div>
+
+        ${
+            successMessage
+                ? `<div class="success-message">${successMessage}</div>`
+                : ""
+        }
+
     `;
 
-};
+
+    /* New Expense */
+
+    document
+        .getElementById("newExpenseBar")
+        .addEventListener(
+            "click",
+            showExpenseForm
+        );
+
+
+    /* Expense History */
+
+    document
+        .getElementById("expenseHistoryBar")
+        .addEventListener(
+            "click",
+            showExpenseHistory
+        );
+
+}
 
 
 /* ============================= */
@@ -29,7 +84,10 @@ howBtn.onclick = function() {
 
     content.innerHTML = `
         <h1>How It Works</h1>
-        <p>This page explains how your Expense Tracker works.</p>
+
+        <p>
+            This page explains how your Expense Tracker works.
+        </p>
     `;
 
 };
@@ -43,10 +101,941 @@ settingsBtn.onclick = function() {
 
     content.innerHTML = `
         <h1>Settings</h1>
-        <p>Your settings will appear here.</p>
+
+        <p>
+            Your settings will appear here.
+        </p>
     `;
 
 };
+
+
+/* ============================= */
+/* NEW EXPENSE */
+/* ============================= */
+
+function showExpenseForm() {
+
+    let currentStep = 1;
+
+
+    let expenseData = {
+
+        name: "",
+
+        rate: "",
+
+        date: "",
+
+        time: "",
+
+        familyMember: "",
+
+        category: ""
+
+    };
+
+
+    renderExpenseStep();
+
+
+    function renderExpenseStep() {
+
+        let stepHTML = "";
+
+
+        /* ============================= */
+        /* STEP 1 - NAME */
+        /* ============================= */
+
+        if (currentStep === 1) {
+
+            stepHTML = `
+
+                <div class="expense-step-content">
+
+                    <label for="expenseName">
+                        Name of Expense
+                    </label>
+
+                    <input
+                        type="text"
+                        id="expenseName"
+                        placeholder="Enter expense name"
+                    >
+
+                    <button
+                        class="next-button"
+                        id="nextButton"
+                    >
+                        Next
+                        <span>→</span>
+                    </button>
+
+                    <div
+                        class="expense-error"
+                        id="expenseError"
+                    ></div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* ============================= */
+        /* STEP 2 - RATE */
+        /* ============================= */
+
+        else if (currentStep === 2) {
+
+            stepHTML = `
+
+                <div class="expense-step-content">
+
+                    <label for="expenseRate">
+                        Rate of Expense
+                    </label>
+
+                    <div class="rate-input">
+
+                        <span>$</span>
+
+                        <input
+                            type="number"
+                            id="expenseRate"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                    <button
+                        class="next-button"
+                        id="nextButton"
+                    >
+                        Next
+                        <span>→</span>
+                    </button>
+
+                    <div
+                        class="expense-error"
+                        id="expenseError"
+                    ></div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* ============================= */
+        /* STEP 3 - DATE + TIME */
+        /* ============================= */
+
+        else if (currentStep === 3) {
+
+            stepHTML = `
+
+                <div class="expense-step-content">
+
+                    <div class="date-time-row">
+
+                        <div class="date-field">
+
+                            <label for="expenseDate">
+                                Date of Expense
+                            </label>
+
+                            <input
+                                type="date"
+                                id="expenseDate"
+                            >
+
+                        </div>
+
+
+                        <div class="time-field">
+
+                            <label for="expenseTime">
+                                Time
+                            </label>
+
+                            <input
+                                type="time"
+                                id="expenseTime"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="next-button"
+                        id="nextButton"
+                    >
+                        Next
+                        <span>→</span>
+                    </button>
+
+                    <div
+                        class="expense-error"
+                        id="expenseError"
+                    ></div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* ============================= */
+        /* STEP 4 - FAMILY MEMBER */
+        /* ============================= */
+
+        else if (currentStep === 4) {
+
+            stepHTML = `
+
+                <div class="expense-step-content">
+
+                    <label for="familyMember">
+                        Family Member
+                    </label>
+
+                    <input
+                        type="text"
+                        id="familyMember"
+                        placeholder="Who made this expense?"
+                    >
+
+                    <button
+                        class="next-button"
+                        id="nextButton"
+                    >
+                        Next
+                        <span>→</span>
+                    </button>
+
+                    <div
+                        class="expense-error"
+                        id="expenseError"
+                    ></div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* ============================= */
+        /* STEP 5 - CATEGORY */
+        /* ============================= */
+
+        else if (currentStep === 5) {
+
+            stepHTML = `
+
+                <div class="expense-step-content">
+
+                    <label for="expenseCategory">
+                        Category
+                    </label>
+
+                    <select id="expenseCategory">
+
+                        <option value="">
+                            Select a category
+                        </option>
+
+                        <option value="Electrical">
+                            Electrical
+                        </option>
+
+                        <option value="Household">
+                            Household
+                        </option>
+
+                        <option value="Furniture">
+                            Furniture
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        class="save-expense-button"
+                        id="saveExpenseButton"
+                        disabled
+                    >
+                        Save Expense
+                    </button>
+
+                    <div
+                        class="expense-error"
+                        id="expenseError"
+                    ></div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* ============================= */
+        /* PROGRESS BAR */
+        /* ============================= */
+
+        let progressHTML = `
+
+            <div class="expense-stepper">
+
+                <div class="step-tab ${
+                    currentStep >= 1 ? "active" : ""
+                }">
+                    Name
+                </div>
+
+                ${
+                    currentStep >= 2
+                        ? `
+                            <div class="step-line"></div>
+
+                            <div class="step-tab active">
+                                Rate
+                            </div>
+                        `
+                        : ""
+                }
+
+                ${
+                    currentStep >= 3
+                        ? `
+                            <div class="step-line"></div>
+
+                            <div class="step-tab active">
+                                Date & Time
+                            </div>
+                        `
+                        : ""
+                }
+
+                ${
+                    currentStep >= 4
+                        ? `
+                            <div class="step-line"></div>
+
+                            <div class="step-tab active">
+                                Family Member
+                            </div>
+                        `
+                        : ""
+                }
+
+                ${
+                    currentStep >= 5
+                        ? `
+                            <div class="step-line"></div>
+
+                            <div class="step-tab active">
+                                Category
+                            </div>
+                        `
+                        : ""
+                }
+
+            </div>
+
+        `;
+
+
+        content.innerHTML = `
+
+            <div class="expense-form-page">
+
+                <div class="expense-form-card">
+
+                    <button
+                        class="expense-back-button"
+                        id="expenseBackButton"
+                    >
+                        ← Back
+                    </button>
+
+                    <h1>New Expense</h1>
+
+                    ${progressHTML}
+
+                    ${stepHTML}
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        /* ============================= */
+        /* BACK BUTTON */
+        /* ============================= */
+
+        document
+            .getElementById("expenseBackButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    showHome();
+
+                }
+            );
+
+
+        /* ============================= */
+        /* STEP 1 */
+        /* ============================= */
+
+        if (currentStep === 1) {
+
+            document
+                .getElementById("nextButton")
+                .addEventListener(
+                    "click",
+                    function() {
+
+                        const value =
+                            document
+                                .getElementById(
+                                    "expenseName"
+                                )
+                                .value
+                                .trim();
+
+
+                        if (value === "") {
+
+                            showError(
+                                "Please enter the name of the expense."
+                            );
+
+                            return;
+
+                        }
+
+
+                        expenseData.name =
+                            value;
+
+                        currentStep = 2;
+
+                        renderExpenseStep();
+
+                    }
+                );
+
+        }
+
+
+        /* ============================= */
+        /* STEP 2 */
+        /* ============================= */
+
+        if (currentStep === 2) {
+
+            document
+                .getElementById("nextButton")
+                .addEventListener(
+                    "click",
+                    function() {
+
+                        const value =
+                            document
+                                .getElementById(
+                                    "expenseRate"
+                                )
+                                .value;
+
+
+                        if (
+                            value === "" ||
+                            Number(value) < 0
+                        ) {
+
+                            showError(
+                                "Please enter a valid expense rate."
+                            );
+
+                            return;
+
+                        }
+
+
+                        expenseData.rate =
+                            Number(value)
+                                .toFixed(2);
+
+                        currentStep = 3;
+
+                        renderExpenseStep();
+
+                    }
+                );
+
+        }
+
+
+        /* ============================= */
+        /* STEP 3 */
+        /* ============================= */
+
+        if (currentStep === 3) {
+
+            document
+                .getElementById("nextButton")
+                .addEventListener(
+                    "click",
+                    function() {
+
+                        const date =
+                            document
+                                .getElementById(
+                                    "expenseDate"
+                                )
+                                .value;
+
+                        const time =
+                            document
+                                .getElementById(
+                                    "expenseTime"
+                                )
+                                .value;
+
+
+                        if (
+                            date === "" ||
+                            time === ""
+                        ) {
+
+                            showError(
+                                "Please select both the date and time."
+                            );
+
+                            return;
+
+                        }
+
+
+                        expenseData.date =
+                            date;
+
+                        expenseData.time =
+                            time;
+
+                        currentStep = 4;
+
+                        renderExpenseStep();
+
+                    }
+                );
+
+        }
+
+
+        /* ============================= */
+        /* STEP 4 */
+        /* ============================= */
+
+        if (currentStep === 4) {
+
+            document
+                .getElementById("nextButton")
+                .addEventListener(
+                    "click",
+                    function() {
+
+                        const value =
+                            document
+                                .getElementById(
+                                    "familyMember"
+                                )
+                                .value
+                                .trim();
+
+
+                        if (value === "") {
+
+                            showError(
+                                "Please enter the family member."
+                            );
+
+                            return;
+
+                        }
+
+
+                        expenseData.familyMember =
+                            value;
+
+                        currentStep = 5;
+
+                        renderExpenseStep();
+
+                    }
+                );
+
+        }
+
+
+        /* ============================= */
+        /* STEP 5 */
+        /* ============================= */
+
+        if (currentStep === 5) {
+
+            const category =
+                document.getElementById(
+                    "expenseCategory"
+                );
+
+            const saveButton =
+                document.getElementById(
+                    "saveExpenseButton"
+                );
+
+
+            category.addEventListener(
+                "change",
+                function() {
+
+                    if (category.value !== "") {
+
+                        saveButton.disabled =
+                            false;
+
+                        saveButton.classList.add(
+                            "enabled"
+                        );
+
+                    } else {
+
+                        saveButton.disabled =
+                            true;
+
+                        saveButton.classList.remove(
+                            "enabled"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            saveButton.addEventListener(
+                "click",
+                function() {
+
+                    if (category.value === "") {
+
+                        return;
+
+                    }
+
+
+                    expenseData.category =
+                        category.value;
+
+
+                    /* Save temporarily */
+
+                    expenses.push({
+                        name:
+                            expenseData.name,
+
+                        rate:
+                            expenseData.rate,
+
+                        date:
+                            expenseData.date,
+
+                        time:
+                            expenseData.time,
+
+                        familyMember:
+                            expenseData.familyMember,
+
+                        category:
+                            expenseData.category
+                    });
+
+
+                    /* Return Home */
+
+                    showHome(
+                        "Saved successfully"
+                    );
+
+                }
+            );
+
+        }
+
+
+        function showError(message) {
+
+            document
+                .getElementById("expenseError")
+                .textContent = message;
+
+        }
+
+    }
+
+}
+
+
+/* ============================= */
+/* EXPENSE HISTORY */
+/* ============================= */
+
+function showExpenseHistory() {
+
+    if (expenses.length === 0) {
+
+        content.innerHTML = `
+
+            <div class="history-empty-page">
+
+                <h1>No expense yet</h1>
+
+                <p>
+                    Expense count:
+                    <strong>0</strong>
+                </p>
+
+                <button
+                    class="history-back-button"
+                    id="historyBackButton"
+                >
+                    ← Back
+                </button>
+
+            </div>
+
+        `;
+
+    } else {
+
+        let cardsHTML = "";
+
+
+        expenses.forEach(
+            function(expense, index) {
+
+                cardsHTML += `
+
+                    <div class="expense-history-card">
+
+                        <div class="history-card-top">
+
+                            <h2>
+                                ${escapeHTML(
+                                    expense.name
+                                )}
+                            </h2>
+
+                            <div class="history-rate">
+                                $${expense.rate}
+                            </div>
+
+                        </div>
+
+
+                        <div class="history-details">
+
+                            <div>
+                                <span>Date</span>
+                                <strong>
+                                    ${formatDate(
+                                        expense.date
+                                    )}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Time</span>
+                                <strong>
+                                    ${formatTime(
+                                        expense.time
+                                    )}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Family Member</span>
+                                <strong>
+                                    ${escapeHTML(
+                                        expense.familyMember
+                                    )}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Category</span>
+                                <strong>
+                                    ${escapeHTML(
+                                        expense.category
+                                    )}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        content.innerHTML = `
+
+            <div class="history-page">
+
+                <button
+                    class="history-back-button"
+                    id="historyBackButton"
+                >
+                    ← Back
+                </button>
+
+                <h1>Expense History</h1>
+
+                <p class="expense-count">
+
+                    ${
+                        expenses.length
+                    }
+
+                    ${
+                        expenses.length === 1
+                            ? "expense"
+                            : "expenses"
+                    }
+
+                </p>
+
+
+                <div class="history-container">
+
+                    <div class="history-left-line"></div>
+
+                    <div class="history-cards">
+
+                        ${cardsHTML}
+
+                    </div>
+
+                    <div class="history-right-line"></div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    document
+        .getElementById("historyBackButton")
+        .addEventListener(
+            "click",
+            function() {
+
+                showHome();
+
+            }
+        );
+
+}
+
+
+/* ============================= */
+/* HELPER FUNCTIONS */
+/* ============================= */
+
+function formatDate(dateString) {
+
+    const date =
+        new Date(
+            dateString + "T00:00:00"
+        );
+
+
+    return date.toLocaleDateString(
+        "en-CA",
+        {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }
+    );
+
+}
+
+
+function formatTime(timeString) {
+
+    const [hours, minutes] =
+        timeString.split(":");
+
+
+    const date =
+        new Date();
+
+    date.setHours(
+        Number(hours),
+        Number(minutes)
+    );
+
+
+    return date.toLocaleTimeString(
+        "en-US",
+        {
+            hour: "numeric",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* Prevent user-entered text from becoming HTML */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
 
 
 /* ============================= */
@@ -208,19 +1197,12 @@ signInBtn.addEventListener(
     "click",
     function() {
 
-        /* Hide login screen */
-
         loginScreen.style.display =
             "none";
-
-
-        /* Show sign in page */
 
         signInPage.style.display =
             "flex";
 
-
-        /* Clear sign in fields */
 
         signInUsernameInput.value = "";
 
@@ -230,8 +1212,6 @@ signInBtn.addEventListener(
 
         signInMessage.textContent = "";
 
-
-        /* Password starts hidden */
 
         signInPasswordInput.type =
             "password";
@@ -312,8 +1292,6 @@ enterAccountBtn.addEventListener(
             signInPinInput.value.trim();
 
 
-        /* Username must be entered */
-
         if (enteredUsername === "") {
 
             signInMessage.textContent =
@@ -324,8 +1302,6 @@ enterAccountBtn.addEventListener(
         }
 
 
-        /* Password must be entered */
-
         if (enteredPassword === "") {
 
             signInMessage.textContent =
@@ -335,8 +1311,6 @@ enterAccountBtn.addEventListener(
 
         }
 
-
-        /* PIN must be from 1 to 5 */
 
         if (
             enteredPin !== "1" &&
@@ -354,15 +1328,8 @@ enterAccountBtn.addEventListener(
         }
 
 
-        /* ============================= */
-        /* SIGN IN SUCCESS */
-        /* ============================= */
-
         signInMessage.textContent = "";
 
-
-        /* Use the entered information
-           as the current account */
 
         accountUsername =
             enteredUsername;
@@ -373,8 +1340,6 @@ enterAccountBtn.addEventListener(
         accountPin =
             enteredPin;
 
-
-        /* Update account box */
 
         displayUsername.textContent =
             accountUsername;
@@ -392,24 +1357,15 @@ enterAccountBtn.addEventListener(
             "Show Pass";
 
 
-        /* Hide Sign In page */
-
         signInPage.style.display =
             "none";
-
-
-        /* Hide Login screen */
 
         loginScreen.style.display =
             "none";
 
 
-        /* Open Home */
+        showHome();
 
-        homeBtn.click();
-
-
-        /* Show account icon */
 
         accountIcon.style.display =
             "flex";
@@ -426,19 +1382,12 @@ signUpBtn.addEventListener(
     "click",
     function() {
 
-        /* Hide login screen */
-
         loginScreen.style.display =
             "none";
-
-
-        /* Show Sign Up page */
 
         signUpPage.style.display =
             "flex";
 
-
-        /* Generate random PIN from 1 to 5 */
 
         accountPin = String(
             Math.floor(Math.random() * 5) + 1
@@ -448,16 +1397,12 @@ signUpBtn.addEventListener(
             accountPin;
 
 
-        /* Clear fields */
-
         usernameInput.value = "";
 
         passwordInput.value = "";
 
         signupMessage.textContent = "";
 
-
-        /* Password starts hidden */
 
         passwordInput.type =
             "password";
@@ -560,8 +1505,6 @@ saveAccountBtn.addEventListener(
             passwordInput.value;
 
 
-        /* Username check */
-
         if (username === "") {
 
             signupMessage.textContent =
@@ -571,8 +1514,6 @@ saveAccountBtn.addEventListener(
 
         }
 
-
-        /* Password check */
 
         if (
             !isValidPassword(password)
@@ -586,8 +1527,6 @@ saveAccountBtn.addEventListener(
         }
 
 
-        /* Save temporary account */
-
         accountUsername =
             username;
 
@@ -597,8 +1536,6 @@ saveAccountBtn.addEventListener(
         accountPin =
             pinInput.value;
 
-
-        /* Put information into account box */
 
         displayUsername.textContent =
             accountUsername;
@@ -617,24 +1554,15 @@ saveAccountBtn.addEventListener(
             "Show Pass";
 
 
-        /* Hide Sign Up page */
-
         signUpPage.style.display =
             "none";
-
-
-        /* Hide Login screen */
 
         loginScreen.style.display =
             "none";
 
 
-        /* Open old Home page */
+        showHome();
 
-        homeBtn.click();
-
-
-        /* Show account icon */
 
         accountIcon.style.display =
             "flex";
@@ -686,8 +1614,6 @@ accountPasswordToggle.addEventListener(
             "true"
         ) {
 
-            /* Hide password */
-
             displayPassword.textContent =
                 "••••••••";
 
@@ -698,8 +1624,6 @@ accountPasswordToggle.addEventListener(
                 "Show Pass";
 
         } else {
-
-            /* Show password */
 
             displayPassword.textContent =
                 accountPassword;
