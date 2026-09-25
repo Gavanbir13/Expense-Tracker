@@ -76,3 +76,267 @@ body {
 #content {
     padding: 40px;
 }
+
+.new-expense-bar {
+    width: 150px;
+    height: 170px;
+
+    margin: 100px auto;
+
+    background-color: white;
+
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.new-expense-bar:hover {
+    transform: scale(1.05);
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.plus-sign {
+    font-size: 35px;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.new-expense-bar div:last-child {
+    font-size: 18px;
+}
+
+
+/* ============================= */
+/* LOGIN SCREEN */
+/* ============================= */
+
+.login-screen {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #f5f5f5;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+}
+
+
+/* Main login box */
+
+.login-box {
+    width: 700px;
+    height: 400px;
+
+    display: flex;
+
+    background-color: white;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+
+    position: relative;
+}
+
+
+/* Both sides */
+
+.login-side {
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    transition: 0.6s ease;
+}
+
+
+/* Purple side */
+
+.sign-in-side {
+    background-color: #7b4bb7;
+
+    color: white;
+}
+
+
+/* White side */
+
+.sign-up-side {
+    background-color: white;
+
+    color: #333;
+}
+
+
+/* Main buttons */
+
+.account-button {
+    border: none;
+
+    background: transparent;
+
+    font-size: 32px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-bottom: 12px;
+
+    transition: 0.2s ease;
+}
+
+
+/* Sign in button */
+
+.sign-in-side .account-button {
+    color: white;
+}
+
+
+/* Sign up button */
+
+.sign-up-side .account-button {
+    color: #333;
+}
+
+
+/* Button hover */
+
+.account-button:hover {
+    transform: scale(1.06);
+}
+
+
+/* Description */
+
+.login-side p {
+    font-size: 16px;
+
+    margin: 0;
+}
+
+
+/* Purple movement */
+
+.login-box.move-purple .sign-in-side {
+    transform: translateX(100%);
+}
+
+.login-box.move-purple .sign-up-side {
+    transform: translateX(-100%);
+}
+
+
+/* Hide login screen */
+
+.login-screen.hide-login {
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: opacity 0.5s ease;
+}
+
+/* ============================= */
+/* RESPONSIVE DESIGN */
+/* ============================= */
+
+/* Tablets and smaller screens */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        height: 60px;
+        gap: 10px;
+    }
+
+    .nav-item {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .nav-item i {
+        font-size: 16px;
+    }
+
+    .new-expense-bar {
+        width: 80%;
+        max-width: 300px;
+    }
+
+    .login-box {
+        width: 90%;
+        max-width: 700px;
+        height: 350px;
+    }
+
+}
+
+
+/* Mobile phones */
+
+@media (max-width: 480px) {
+
+    .navbar {
+        height: 60px;
+        gap: 3px;
+    }
+
+    .nav-item {
+        padding: 9px 8px;
+        font-size: 12px;
+        gap: 5px;
+    }
+
+    .nav-item i {
+        font-size: 15px;
+    }
+
+    .new-expense-bar {
+        width: 85%;
+        height: 110px;
+        margin: 70px auto;
+    }
+
+    .login-box {
+        width: 92%;
+        height: 300px;
+        border-radius: 15px;
+    }
+
+    .account-button {
+        font-size: 24px;
+    }
+
+    .login-side p {
+        font-size: 13px;
+    }
+
+}

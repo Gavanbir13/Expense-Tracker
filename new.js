@@ -8,9 +8,11 @@ const content = document.getElementById("content");
 homeBtn.onclick = function() {
 
     content.innerHTML = `
-        <h1>Home</h1>
-        <p>Welcome to your Expense Tracker.</p>
-    `;
+    <div class="new-expense-bar">
+        <div class="plus-sign">+</div>
+        <div>New Expense</div>
+    </div>
+`;
 
 };
 
@@ -33,3 +35,43 @@ settingsBtn.onclick = function() {
     `;
 
 };
+
+
+/* ============================= */
+/* LOGIN SCREEN */
+/* ============================= */
+
+const loginScreen = document.getElementById("loginScreen");
+
+const loginBox = document.querySelector(".login-box");
+
+const signInBtn = document.getElementById("signInBtn");
+
+const signUpBtn = document.getElementById("signUpBtn");
+
+
+/* Sign In */
+
+signInBtn.addEventListener("click", function() {
+
+    /* Move purple side */
+    loginBox.classList.add("move-purple");
+
+    /* Wait for animation */
+    setTimeout(function() {
+
+        /* Hide login screen */
+        loginScreen.classList.add("hide-login");
+
+    }, 600);
+
+});
+
+
+/* Sign Up */
+
+signUpBtn.addEventListener("click", function() {
+
+    /* Nothing for now */
+
+});
