@@ -104,7 +104,7 @@
 
         <p id="passwordRequirements" class="password-requirements">
             Password must contain at least one letter, one number,
-            and one of ! @ # $ &gt; _
+            and one of ! @ # $ . _
         </p>
 
 
@@ -189,6 +189,96 @@
             <strong>PIN</strong>
             <span id="displayPin"></span>
         </div>
+
+    </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- SIGN IN PAGE -->
+<!-- ============================= -->
+
+<div id="signInPage" class="sign-in-page">
+
+    <div class="sign-in-box">
+
+        <button id="backToLoginFromSignInBtn"
+                class="back-button">
+            ← Back
+        </button>
+
+        <h1>Sign In</h1>
+
+
+        <!-- Username -->
+
+        <label for="signInUsernameInput">
+            Username
+        </label>
+
+        <input
+            type="text"
+            id="signInUsernameInput"
+            placeholder="Enter username"
+            autocomplete="off"
+        >
+
+
+        <!-- Password -->
+
+        <label for="signInPasswordInput">
+            Password
+        </label>
+
+        <div class="password-container">
+
+            <input
+                type="password"
+                id="signInPasswordInput"
+                placeholder="Enter password"
+                autocomplete="current-password"
+            >
+
+            <button
+                type="button"
+                id="signInPasswordToggleBtn">
+                Show Pass
+            </button>
+
+        </div>
+
+
+        <!-- PIN -->
+
+        <label for="signInPinInput">
+            PIN
+        </label>
+
+        <input
+            type="text"
+            id="signInPinInput"
+            placeholder="Enter PIN"
+            inputmode="numeric"
+        >
+
+
+        <!-- Enter -->
+
+        <button
+            type="button"
+            id="enterAccountBtn"
+            class="enter-button">
+
+            Enter
+
+        </button>
+
+
+        <!-- Error / message -->
+
+        <p id="signInMessage"
+           class="signin-message">
+        </p>
 
     </div>
 

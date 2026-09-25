@@ -738,3 +738,248 @@ body {
     }
 
 }
+
+
+
+/* ============================= */
+/* SIGN IN PAGE */
+/* ============================= */
+
+.sign-in-page {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #f5f5f5;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1100;
+}
+
+
+/* Sign In Box */
+
+.sign-in-box {
+
+    width: 450px;
+
+    padding: 40px;
+
+    background-color: white;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.2);
+
+    position: relative;
+}
+
+
+/* Back Button */
+
+.sign-in-box .back-button {
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 16px;
+
+    color: #555;
+
+    cursor: pointer;
+
+    margin-bottom: 20px;
+}
+
+.sign-in-box .back-button:hover {
+
+    color: #000;
+
+}
+
+
+/* Heading */
+
+.sign-in-box h1 {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+
+}
+
+
+/* Labels */
+
+.sign-in-box label {
+
+    display: block;
+
+    margin-top: 15px;
+
+    margin-bottom: 7px;
+
+    font-weight: bold;
+
+    color: #333;
+}
+
+
+/* Normal Inputs */
+
+.sign-in-box > input {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+
+.sign-in-box > input:focus {
+
+    border-color: #777;
+
+}
+
+
+/* Password Container */
+
+.sign-in-box .password-container {
+
+    width: 100%;
+
+    display: flex;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+
+/* Password Input */
+
+.sign-in-box .password-container input {
+
+    flex: 1;
+
+    border: none;
+
+    outline: none;
+
+    padding: 12px;
+
+    font-size: 16px;
+
+    min-width: 0;
+}
+
+
+/* Show Password Button */
+
+.sign-in-box .password-container button {
+
+    border: none;
+
+    background-color: #f0f0f0;
+
+    padding: 0 12px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+
+.sign-in-box .password-container button:hover {
+
+    background-color: #e5e5e5;
+
+}
+
+
+/* Enter Button */
+
+.enter-button {
+
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #007bff;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.enter-button:hover {
+
+    background-color: #0069d9;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* Sign In Message */
+
+.signin-message {
+
+    text-align: center;
+
+    margin-top: 15px;
+
+    font-size: 14px;
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+    .sign-in-box {
+
+        width: 92%;
+
+        padding: 25px;
+
+        border-radius: 15px;
+
+    }
+
+}

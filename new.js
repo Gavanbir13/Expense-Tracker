@@ -53,53 +53,100 @@ settingsBtn.onclick = function() {
 /* LOGIN SCREEN */
 /* ============================= */
 
-const loginScreen = document.getElementById("loginScreen");
+const loginScreen =
+    document.getElementById("loginScreen");
 
-const signInBtn = document.getElementById("signInBtn");
+const signInBtn =
+    document.getElementById("signInBtn");
 
-const signUpBtn = document.getElementById("signUpBtn");
+const signUpBtn =
+    document.getElementById("signUpBtn");
 
 
 /* ============================= */
-/* SIGN IN */
+/* SIGN IN PAGE */
 /* ============================= */
 
-signInBtn.addEventListener("click", function() {
+const signInPage =
+    document.getElementById("signInPage");
 
-    loginScreen.style.display = "none";
+const backToLoginFromSignInBtn =
+    document.getElementById(
+        "backToLoginFromSignInBtn"
+    );
 
-    /* Open the old Home page */
-    homeBtn.click();
+const signInUsernameInput =
+    document.getElementById(
+        "signInUsernameInput"
+    );
 
-});
+const signInPasswordInput =
+    document.getElementById(
+        "signInPasswordInput"
+    );
+
+const signInPinInput =
+    document.getElementById(
+        "signInPinInput"
+    );
+
+const signInPasswordToggleBtn =
+    document.getElementById(
+        "signInPasswordToggleBtn"
+    );
+
+const enterAccountBtn =
+    document.getElementById(
+        "enterAccountBtn"
+    );
+
+const signInMessage =
+    document.getElementById(
+        "signInMessage"
+    );
 
 
 /* ============================= */
 /* SIGN UP PAGE */
 /* ============================= */
 
-const signUpPage = document.getElementById("signUpPage");
+const signUpPage =
+    document.getElementById("signUpPage");
 
 const backToLoginBtn =
-    document.getElementById("backToLoginBtn");
+    document.getElementById(
+        "backToLoginBtn"
+    );
 
 const usernameInput =
-    document.getElementById("usernameInput");
+    document.getElementById(
+        "usernameInput"
+    );
 
 const passwordInput =
-    document.getElementById("passwordInput");
+    document.getElementById(
+        "passwordInput"
+    );
 
 const pinInput =
-    document.getElementById("pinInput");
+    document.getElementById(
+        "pinInput"
+    );
 
 const passwordToggleBtn =
-    document.getElementById("passwordToggleBtn");
+    document.getElementById(
+        "passwordToggleBtn"
+    );
 
 const saveAccountBtn =
-    document.getElementById("saveAccountBtn");
+    document.getElementById(
+        "saveAccountBtn"
+    );
 
 const signupMessage =
-    document.getElementById("signupMessage");
+    document.getElementById(
+        "signupMessage"
+    );
 
 
 /* ============================= */
@@ -107,25 +154,39 @@ const signupMessage =
 /* ============================= */
 
 const accountIcon =
-    document.getElementById("accountIcon");
+    document.getElementById(
+        "accountIcon"
+    );
 
 const accountOverlay =
-    document.getElementById("accountOverlay");
+    document.getElementById(
+        "accountOverlay"
+    );
 
 const closeAccountBtn =
-    document.getElementById("closeAccountBtn");
+    document.getElementById(
+        "closeAccountBtn"
+    );
 
 const displayUsername =
-    document.getElementById("displayUsername");
+    document.getElementById(
+        "displayUsername"
+    );
 
 const displayPassword =
-    document.getElementById("displayPassword");
+    document.getElementById(
+        "displayPassword"
+    );
 
 const displayPin =
-    document.getElementById("displayPin");
+    document.getElementById(
+        "displayPin"
+    );
 
 const accountPasswordToggle =
-    document.getElementById("accountPasswordToggle");
+    document.getElementById(
+        "accountPasswordToggle"
+    );
 
 
 /* ============================= */
@@ -140,53 +201,290 @@ let accountPin = "";
 
 
 /* ============================= */
-/* OPEN SIGN UP */
+/* SIGN IN BUTTON */
 /* ============================= */
 
-signUpBtn.addEventListener("click", function() {
+signInBtn.addEventListener(
+    "click",
+    function() {
 
-    /* Hide login screen */
-    loginScreen.style.display = "none";
+        /* Hide login screen */
 
-    /* Show sign up page */
-    signUpPage.style.display = "flex";
-
-
-    /* Generate random PIN from 1 to 5 */
-    accountPin = String(
-        Math.floor(Math.random() * 5) + 1
-    );
-
-    pinInput.value = accountPin;
+        loginScreen.style.display =
+            "none";
 
 
-    /* Clear fields */
-    usernameInput.value = "";
+        /* Show sign in page */
 
-    passwordInput.value = "";
-
-    signupMessage.textContent = "";
+        signInPage.style.display =
+            "flex";
 
 
-    /* Make sure password starts hidden */
-    passwordInput.type = "password";
+        /* Clear sign in fields */
 
-    passwordToggleBtn.textContent = "Show Pass";
+        signInUsernameInput.value = "";
 
-});
+        signInPasswordInput.value = "";
+
+        signInPinInput.value = "";
+
+        signInMessage.textContent = "";
+
+
+        /* Password starts hidden */
+
+        signInPasswordInput.type =
+            "password";
+
+        signInPasswordToggleBtn.textContent =
+            "Show Pass";
+
+    }
+);
 
 
 /* ============================= */
-/* BACK TO LOGIN */
+/* BACK FROM SIGN IN */
 /* ============================= */
 
-backToLoginBtn.addEventListener("click", function() {
+backToLoginFromSignInBtn.addEventListener(
+    "click",
+    function() {
 
-    signUpPage.style.display = "none";
+        signInPage.style.display =
+            "none";
 
-    loginScreen.style.display = "flex";
+        loginScreen.style.display =
+            "flex";
 
-});
+    }
+);
+
+
+/* ============================= */
+/* SIGN IN PASSWORD SHOW / HIDE */
+/* ============================= */
+
+signInPasswordToggleBtn.addEventListener(
+    "click",
+    function() {
+
+        if (
+            signInPasswordInput.type ===
+            "password"
+        ) {
+
+            signInPasswordInput.type =
+                "text";
+
+            signInPasswordToggleBtn.textContent =
+                "Hide Pass";
+
+        } else {
+
+            signInPasswordInput.type =
+                "password";
+
+            signInPasswordToggleBtn.textContent =
+                "Show Pass";
+
+        }
+
+    }
+);
+
+
+/* ============================= */
+/* ENTER ACCOUNT */
+/* ============================= */
+
+enterAccountBtn.addEventListener(
+    "click",
+    function() {
+
+        const enteredUsername =
+            signInUsernameInput.value.trim();
+
+        const enteredPassword =
+            signInPasswordInput.value;
+
+        const enteredPin =
+            signInPinInput.value.trim();
+
+
+        /* Username must be entered */
+
+        if (enteredUsername === "") {
+
+            signInMessage.textContent =
+                "Please enter a username.";
+
+            return;
+
+        }
+
+
+        /* Password must be entered */
+
+        if (enteredPassword === "") {
+
+            signInMessage.textContent =
+                "Please enter a password.";
+
+            return;
+
+        }
+
+
+        /* PIN must be from 1 to 5 */
+
+        if (
+            enteredPin !== "1" &&
+            enteredPin !== "2" &&
+            enteredPin !== "3" &&
+            enteredPin !== "4" &&
+            enteredPin !== "5"
+        ) {
+
+            signInMessage.textContent =
+                "PIN must be a number from 1 to 5.";
+
+            return;
+
+        }
+
+
+        /* ============================= */
+        /* SIGN IN SUCCESS */
+        /* ============================= */
+
+        signInMessage.textContent = "";
+
+
+        /* Use the entered information
+           as the current account */
+
+        accountUsername =
+            enteredUsername;
+
+        accountPassword =
+            enteredPassword;
+
+        accountPin =
+            enteredPin;
+
+
+        /* Update account box */
+
+        displayUsername.textContent =
+            accountUsername;
+
+        displayPassword.textContent =
+            "••••••••";
+
+        displayPassword.dataset.visible =
+            "false";
+
+        displayPin.textContent =
+            accountPin;
+
+        accountPasswordToggle.textContent =
+            "Show Pass";
+
+
+        /* Hide Sign In page */
+
+        signInPage.style.display =
+            "none";
+
+
+        /* Hide Login screen */
+
+        loginScreen.style.display =
+            "none";
+
+
+        /* Open Home */
+
+        homeBtn.click();
+
+
+        /* Show account icon */
+
+        accountIcon.style.display =
+            "flex";
+
+    }
+);
+
+
+/* ============================= */
+/* SIGN UP BUTTON */
+/* ============================= */
+
+signUpBtn.addEventListener(
+    "click",
+    function() {
+
+        /* Hide login screen */
+
+        loginScreen.style.display =
+            "none";
+
+
+        /* Show Sign Up page */
+
+        signUpPage.style.display =
+            "flex";
+
+
+        /* Generate random PIN from 1 to 5 */
+
+        accountPin = String(
+            Math.floor(Math.random() * 5) + 1
+        );
+
+        pinInput.value =
+            accountPin;
+
+
+        /* Clear fields */
+
+        usernameInput.value = "";
+
+        passwordInput.value = "";
+
+        signupMessage.textContent = "";
+
+
+        /* Password starts hidden */
+
+        passwordInput.type =
+            "password";
+
+        passwordToggleBtn.textContent =
+            "Show Pass";
+
+    }
+);
+
+
+/* ============================= */
+/* BACK TO LOGIN FROM SIGN UP */
+/* ============================= */
+
+backToLoginBtn.addEventListener(
+    "click",
+    function() {
+
+        signUpPage.style.display =
+            "none";
+
+        loginScreen.style.display =
+            "flex";
+
+    }
+);
 
 
 /* ============================= */
@@ -205,9 +503,11 @@ function isValidPassword(password) {
         /[!@#$&>_]/.test(password);
 
 
-    return hasLetter &&
-           hasNumber &&
-           hasSpecial;
+    return (
+        hasLetter &&
+        hasNumber &&
+        hasSpecial
+    );
 
 }
 
@@ -216,145 +516,95 @@ function isValidPassword(password) {
 /* SIGN UP PASSWORD SHOW / HIDE */
 /* ============================= */
 
-passwordToggleBtn.addEventListener("click", function() {
+passwordToggleBtn.addEventListener(
+    "click",
+    function() {
 
-    if (passwordInput.type === "password") {
+        if (
+            passwordInput.type ===
+            "password"
+        ) {
 
-        passwordInput.type = "text";
+            passwordInput.type =
+                "text";
 
-        passwordToggleBtn.textContent = "Hide Pass";
+            passwordToggleBtn.textContent =
+                "Hide Pass";
 
-    } else {
+        } else {
 
-        passwordInput.type = "password";
+            passwordInput.type =
+                "password";
 
-        passwordToggleBtn.textContent = "Show Pass";
+            passwordToggleBtn.textContent =
+                "Show Pass";
+
+        }
 
     }
-
-});
+);
 
 
 /* ============================= */
 /* SAVE ACCOUNT */
 /* ============================= */
 
-saveAccountBtn.addEventListener("click", function() {
+saveAccountBtn.addEventListener(
+    "click",
+    function() {
 
-    const username =
-        usernameInput.value.trim();
+        const username =
+            usernameInput.value.trim();
 
-    const password =
-        passwordInput.value;
-
-
-    /* Check username */
-
-    if (username === "") {
-
-        signupMessage.textContent =
-            "Please enter a username.";
-
-        return;
-
-    }
+        const password =
+            passwordInput.value;
 
 
-    /* Check password */
+        /* Username check */
 
-    if (!isValidPassword(password)) {
+        if (username === "") {
 
-        signupMessage.textContent =
-            "Password needs a letter, a number, and at least one of ! @ # $ & > _";
+            signupMessage.textContent =
+                "Please enter a username.";
 
-        return;
+            return;
 
-    }
-
-
-    /* Save temporary account */
-
-    accountUsername = username;
-
-    accountPassword = password;
-
-    accountPin = pinInput.value;
+        }
 
 
-    /* Put account information into account box */
+        /* Password check */
 
-    displayUsername.textContent =
-        accountUsername;
+        if (
+            !isValidPassword(password)
+        ) {
 
-    displayPin.textContent =
-        accountPin;
+            signupMessage.textContent =
+                "Password needs a letter, a number, and at least one of ! @ # $ & > _";
 
-    displayPassword.textContent =
-        "••••••••";
+            return;
 
-    displayPassword.dataset.visible =
-        "false";
-
-
-    /* Make sure account password starts hidden */
-
-    accountPasswordToggle.textContent =
-        "Show Pass";
+        }
 
 
-    /* Hide sign up page */
+        /* Save temporary account */
 
-    signUpPage.style.display = "none";
+        accountUsername =
+            username;
 
+        accountPassword =
+            password;
 
-    /* Hide login screen */
-
-    loginScreen.style.display = "none";
-
-
-    /* Open old Home page */
-
-    homeBtn.click();
+        accountPin =
+            pinInput.value;
 
 
-    /* Show account icon */
+        /* Put information into account box */
 
-    accountIcon.style.display = "flex";
+        displayUsername.textContent =
+            accountUsername;
 
-});
-
-
-/* ============================= */
-/* OPEN ACCOUNT */
-/* ============================= */
-
-accountIcon.addEventListener("click", function() {
-
-    accountOverlay.style.display = "flex";
-
-});
-
-
-/* ============================= */
-/* CLOSE ACCOUNT */
-/* ============================= */
-
-closeAccountBtn.addEventListener("click", function() {
-
-    accountOverlay.style.display = "none";
-
-});
-
-
-/* ============================= */
-/* ACCOUNT PASSWORD SHOW / HIDE */
-/* ============================= */
-
-accountPasswordToggle.addEventListener("click", function() {
-
-    if (displayPassword.dataset.visible === "true") {
-
-        /* Hide password */
+        displayPin.textContent =
+            accountPin;
 
         displayPassword.textContent =
             "••••••••";
@@ -362,22 +612,105 @@ accountPasswordToggle.addEventListener("click", function() {
         displayPassword.dataset.visible =
             "false";
 
+
         accountPasswordToggle.textContent =
             "Show Pass";
 
-    } else {
 
-        /* Show password */
+        /* Hide Sign Up page */
 
-        displayPassword.textContent =
-            accountPassword;
+        signUpPage.style.display =
+            "none";
 
-        displayPassword.dataset.visible =
-            "true";
 
-        accountPasswordToggle.textContent =
-            "Hide Pass";
+        /* Hide Login screen */
+
+        loginScreen.style.display =
+            "none";
+
+
+        /* Open old Home page */
+
+        homeBtn.click();
+
+
+        /* Show account icon */
+
+        accountIcon.style.display =
+            "flex";
 
     }
+);
 
-});
+
+/* ============================= */
+/* ACCOUNT ICON */
+/* ============================= */
+
+accountIcon.addEventListener(
+    "click",
+    function() {
+
+        accountOverlay.style.display =
+            "flex";
+
+    }
+);
+
+
+/* ============================= */
+/* CLOSE ACCOUNT BOX */
+/* ============================= */
+
+closeAccountBtn.addEventListener(
+    "click",
+    function() {
+
+        accountOverlay.style.display =
+            "none";
+
+    }
+);
+
+
+/* ============================= */
+/* ACCOUNT PASSWORD SHOW / HIDE */
+/* ============================= */
+
+accountPasswordToggle.addEventListener(
+    "click",
+    function() {
+
+        if (
+            displayPassword.dataset.visible ===
+            "true"
+        ) {
+
+            /* Hide password */
+
+            displayPassword.textContent =
+                "••••••••";
+
+            displayPassword.dataset.visible =
+                "false";
+
+            accountPasswordToggle.textContent =
+                "Show Pass";
+
+        } else {
+
+            /* Show password */
+
+            displayPassword.textContent =
+                accountPassword;
+
+            displayPassword.dataset.visible =
+                "true";
+
+            accountPasswordToggle.textContent =
+                "Hide Pass";
+
+        }
+
+    }
+);
