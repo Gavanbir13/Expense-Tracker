@@ -15,12 +15,14 @@
 
 <body>
 
-    <!-- Login Screen -->
+<!-- Login Screen -->
+
 <div id="loginScreen" class="login-screen">
 
     <div class="login-box">
 
-        <!-- Sign In Side -->
+        <!-- Sign In -->
+
         <div class="login-side sign-in-side">
 
             <button id="signInBtn" class="account-button">
@@ -32,7 +34,8 @@
         </div>
 
 
-        <!-- Sign Up Side -->
+        <!-- Sign Up -->
+
         <div class="login-side sign-up-side">
 
             <button id="signUpBtn" class="account-button">
@@ -41,6 +44,150 @@
 
             <p>Create a new account</p>
 
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- SIGN UP PAGE -->
+<!-- ============================= -->
+
+<div id="signUpPage" class="sign-up-page">
+
+    <div class="sign-up-box">
+
+        <button id="backToLoginBtn" class="back-button">
+            ← Back
+        </button>
+
+        <h1>Sign Up</h1>
+
+        <!-- Username -->
+
+        <label for="usernameInput">
+            Username
+        </label>
+
+        <input
+            type="text"
+            id="usernameInput"
+            placeholder="Enter username"
+            autocomplete="off"
+        >
+
+
+        <!-- Password -->
+
+        <label for="passwordInput">
+            Password
+        </label>
+
+        <div class="password-container">
+
+            <input
+                type="password"
+                id="passwordInput"
+                placeholder="Enter password"
+                autocomplete="new-password"
+            >
+
+            <button
+                type="button"
+                id="passwordToggleBtn"
+            >
+                Show Pass
+            </button>
+
+        </div>
+
+        <p id="passwordRequirements" class="password-requirements">
+            Password must contain at least one letter, one number,
+            and one of ! @ # $ &gt; _
+        </p>
+
+
+        <!-- PIN -->
+
+        <label for="pinInput">
+            PIN
+        </label>
+
+        <input
+            type="text"
+            id="pinInput"
+            readonly
+        >
+
+
+        <!-- Save -->
+
+        <button
+            type="button"
+            id="saveAccountBtn"
+            class="save-button"
+        >
+            Save
+        </button>
+
+        <p id="signupMessage" class="signup-message"></p>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- ACCOUNT ICON -->
+<!-- ============================= -->
+
+<button id="accountIcon" class="account-icon">
+    <i class="fa-solid fa-user"></i>
+</button>
+
+
+<!-- ============================= -->
+<!-- ACCOUNT INFORMATION -->
+<!-- ============================= -->
+
+<div id="accountOverlay" class="account-overlay">
+
+    <div class="account-info-box">
+
+        <button id="closeAccountBtn" class="account-back-button">
+            ← Back
+        </button>
+
+        <h2>Account</h2>
+
+        <div class="account-detail">
+            <strong>Username</strong>
+            <span id="displayUsername"></span>
+        </div>
+
+        <div class="account-detail">
+            <strong>Password</strong>
+
+            <div class="display-password-container">
+
+                <span id="displayPassword">
+                    ••••••••
+                </span>
+
+                <button
+                    type="button"
+                    id="accountPasswordToggle"
+                >
+                    Show Pass
+                </button>
+
+            </div>
+        </div>
+
+        <div class="account-detail">
+            <strong>PIN</strong>
+            <span id="displayPin"></span>
         </div>
 
     </div>

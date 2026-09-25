@@ -132,6 +132,7 @@ body {
     background-color: #f5f5f5;
 
     display: flex;
+
     justify-content: center;
     align-items: center;
 
@@ -139,7 +140,7 @@ body {
 }
 
 
-/* Main login box */
+/* Main box */
 
 .login-box {
     width: 700px;
@@ -154,8 +155,6 @@ body {
     overflow: hidden;
 
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-
-    position: relative;
 }
 
 
@@ -166,27 +165,26 @@ body {
     height: 100%;
 
     display: flex;
+
     flex-direction: column;
 
     justify-content: center;
     align-items: center;
 
     text-align: center;
-
-    transition: 0.6s ease;
 }
 
 
-/* Purple side */
+/* Sign In */
 
 .sign-in-side {
-    background-color: #7b4bb7;
+    background-color: #eeeeee;
 
-    color: white;
+    color: #333;
 }
 
 
-/* White side */
+/* Sign Up */
 
 .sign-up-side {
     background-color: white;
@@ -195,14 +193,17 @@ body {
 }
 
 
-/* Main buttons */
+/* Buttons */
 
 .account-button {
     border: none;
 
-    background: transparent;
+    background-color: transparent;
+
+    color: #333;
 
     font-size: 32px;
+
     font-weight: bold;
 
     cursor: pointer;
@@ -210,20 +211,6 @@ body {
     margin-bottom: 12px;
 
     transition: 0.2s ease;
-}
-
-
-/* Sign in button */
-
-.sign-in-side .account-button {
-    color: white;
-}
-
-
-/* Sign up button */
-
-.sign-up-side .account-button {
-    color: #333;
 }
 
 
@@ -242,33 +229,9 @@ body {
     margin: 0;
 }
 
-
-/* Purple movement */
-
-.login-box.move-purple .sign-in-side {
-    transform: translateX(100%);
-}
-
-.login-box.move-purple .sign-up-side {
-    transform: translateX(-100%);
-}
-
-
-/* Hide login screen */
-
-.login-screen.hide-login {
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition: opacity 0.5s ease;
-}
-
 /* ============================= */
 /* RESPONSIVE DESIGN */
 /* ============================= */
-
-/* Tablets and smaller screens */
 
 @media (max-width: 768px) {
 
@@ -300,7 +263,9 @@ body {
 }
 
 
-/* Mobile phones */
+/* ============================= */
+/* MOBILE PHONES */
+/* ============================= */
 
 @media (max-width: 480px) {
 
@@ -337,6 +302,439 @@ body {
 
     .login-side p {
         font-size: 13px;
+    }
+
+}
+
+/* ============================= */
+/* SIGN UP PAGE */
+/* ============================= */
+
+.sign-up-page {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #f5f5f5;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1100;
+}
+
+
+.sign-up-box {
+    width: 450px;
+
+    padding: 40px;
+
+    background-color: white;
+
+    border-radius: 18px;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+
+    position: relative;
+}
+
+
+.sign-up-box h1 {
+    text-align: center;
+
+    margin-bottom: 30px;
+
+    color: #333;
+}
+
+
+.sign-up-box label {
+    display: block;
+
+    margin-top: 18px;
+    margin-bottom: 7px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    color: #333;
+}
+
+
+.sign-up-box input {
+    width: 100%;
+
+    height: 45px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+.sign-up-box input:focus {
+    border-color: #777;
+}
+
+
+/* ============================= */
+/* PASSWORD */
+/* ============================= */
+
+.password-container {
+    display: flex;
+
+    width: 100%;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+
+.password-container input {
+    border: none;
+
+    border-radius: 0;
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.password-container input:focus {
+    border: none;
+}
+
+
+#passwordToggleBtn {
+    border: none;
+
+    background-color: white;
+
+    color: #555;
+
+    padding: 0 12px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+}
+
+
+#passwordToggleBtn:hover {
+    background-color: #f0f0f0;
+}
+
+
+.password-requirements {
+    margin-top: 7px;
+
+    font-size: 12px;
+
+    color: #777;
+
+    line-height: 1.4;
+}
+
+
+/* ============================= */
+/* PIN */
+/* ============================= */
+
+#pinInput {
+    background-color: #f3f3f3;
+
+    text-align: center;
+
+    font-size: 20px;
+
+    font-weight: bold;
+}
+
+
+/* ============================= */
+/* SAVE BUTTON */
+/* ============================= */
+
+.save-button {
+    width: 100%;
+
+    height: 45px;
+
+    margin-top: 25px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #1877f2;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.save-button:hover {
+    background-color: #0d65d3;
+
+    transform: scale(1.02);
+}
+
+
+.signup-message {
+    text-align: center;
+
+    margin-top: 12px;
+
+    font-size: 13px;
+
+    color: #d33;
+}
+
+
+/* ============================= */
+/* BACK BUTTON */
+/* ============================= */
+
+.back-button {
+    border: none;
+
+    background-color: transparent;
+
+    color: #555;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    margin-bottom: 10px;
+}
+
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================= */
+/* ACCOUNT ICON */
+/* ============================= */
+
+.account-icon {
+    position: fixed;
+
+    top: 20px;
+    right: 25px;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background-color: white;
+
+    color: #333;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+
+    z-index: 900;
+}
+
+
+.account-icon:hover {
+    background-color: #f0f0f0;
+
+    transform: scale(1.05);
+}
+
+
+/* ============================= */
+/* ACCOUNT OVERLAY */
+/* ============================= */
+
+.account-overlay {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.25);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1200;
+}
+
+
+.account-info-box {
+    width: 430px;
+
+    background-color: white;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+
+    position: relative;
+}
+
+
+.account-info-box h2 {
+    text-align: center;
+
+    margin-bottom: 25px;
+
+    color: #333;
+}
+
+
+.account-back-button {
+    border: none;
+
+    background-color: transparent;
+
+    color: #555;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    margin-bottom: 10px;
+}
+
+
+.account-back-button:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================= */
+/* ACCOUNT DETAILS */
+/* ============================= */
+
+.account-detail {
+    padding: 15px 0;
+
+    border-bottom: 1px solid #eee;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.account-detail strong {
+    color: #444;
+}
+
+
+.account-detail span {
+    color: #666;
+
+    word-break: break-word;
+}
+
+
+.display-password-container {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+#accountPasswordToggle {
+    border: none;
+
+    background-color: transparent;
+
+    color: #1877f2;
+
+    cursor: pointer;
+
+    font-size: 13px;
+}
+
+
+#accountPasswordToggle:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media (max-width: 480px) {
+
+    .sign-up-box {
+        width: 92%;
+
+        padding: 25px;
+    }
+
+
+    .account-info-box {
+        width: 92%;
+
+        padding: 25px;
+    }
+
+
+    .account-icon {
+        top: 12px;
+        right: 12px;
+
+        width: 42px;
+        height: 42px;
     }
 
 }
