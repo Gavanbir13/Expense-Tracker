@@ -809,7 +809,11 @@ function showExpenseForm() {
 /* EXPENSE HISTORY */
 /* ============================= */
 
-function showExpenseHistory() {
+let historyViewMode = "compact";
+
+function showExpenseHistory(viewMode = historyViewMode) {
+
+    historyViewMode = viewMode;
 
     if (expenses.length === 0) {
 
@@ -840,74 +844,151 @@ function showExpenseHistory() {
         let cardsHTML = "";
 
 
-        expenses.forEach(
-            function(expense, index) {
+        /* ============================= */
+        /* DETAILED VIEW */
+        /* ============================= */
 
-                cardsHTML += `
+        if (viewMode === "detailed") {
 
-                    <div class="expense-history-card">
+            expenses.forEach(
+                function(expense, index) {
 
-                        <div class="history-card-top">
+                    cardsHTML += `
 
-                            <h2>
-                                ${escapeHTML(
-                                    expense.name
-                                )}
-                            </h2>
+                        <div class="expense-history-card">
 
-                            <div class="history-rate">
-                                $${expense.rate}
+                            <div class="history-card-top">
+
+                                <h2>
+                                    ${escapeHTML(
+                                        expense.name
+                                    )}
+                                </h2>
+
+                                <div class="history-rate">
+                                    $${expense.rate}
+                                </div>
+
+                            </div>
+
+
+                            <div class="history-details">
+
+                                <div>
+
+                                    <span>Date</span>
+
+                                    <strong>
+                                        ${formatDate(
+                                            expense.date
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>Time</span>
+
+                                    <strong>
+                                        ${formatTime(
+                                            expense.time
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>Family Member</span>
+
+                                    <strong>
+                                        ${escapeHTML(
+                                            expense.familyMember
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>Category</span>
+
+                                    <strong>
+                                        ${escapeHTML(
+                                            expense.category
+                                        )}
+                                    </strong>
+
+                                </div>
+
                             </div>
 
                         </div>
 
+                    `;
 
-                        <div class="history-details">
+                }
+            );
 
-                            <div>
-                                <span>Date</span>
-                                <strong>
+        }
+
+
+        /* ============================= */
+        /* COMPACT VIEW */
+        /* ============================= */
+
+        else {
+
+            expenses.forEach(
+                function(expense, index) {
+
+                    cardsHTML += `
+
+                        <div
+                            class="expense-history-card compact"
+                            data-expense-index="${index}"
+                        >
+
+                            <div class="compact-history-row">
+
+                                <div class="compact-history-name">
+
+                                    ${escapeHTML(
+                                        expense.name
+                                    )}
+
+                                </div>
+
+
+                                <div class="compact-history-date">
+
                                     ${formatDate(
                                         expense.date
                                     )}
-                                </strong>
-                            </div>
 
-                            <div>
-                                <span>Time</span>
-                                <strong>
-                                    ${formatTime(
-                                        expense.time
-                                    )}
-                                </strong>
-                            </div>
+                                </div>
 
-                            <div>
-                                <span>Family Member</span>
-                                <strong>
-                                    ${escapeHTML(
-                                        expense.familyMember
-                                    )}
-                                </strong>
-                            </div>
 
-                            <div>
-                                <span>Category</span>
-                                <strong>
-                                    ${escapeHTML(
-                                        expense.category
-                                    )}
-                                </strong>
+                                <div class="compact-history-rate">
+
+                                    $${expense.rate}
+
+                                </div>
+
                             </div>
 
                         </div>
 
-                    </div>
+                    `;
 
-                `;
+                }
+            );
 
-            }
-        );
+        }
 
 
         content.innerHTML = `
@@ -921,13 +1002,13 @@ function showExpenseHistory() {
                     ← Back
                 </button>
 
+
                 <h1>Expense History</h1>
+
 
                 <p class="expense-count">
 
-                    ${
-                        expenses.length
-                    }
+                    ${expenses.length}
 
                     ${
                         expenses.length === 1
@@ -938,15 +1019,47 @@ function showExpenseHistory() {
                 </p>
 
 
+                <!-- VIEW OPTIONS -->
+
+                <div class="history-view-options">
+
+                    <button
+                        class="history-view-button ${
+                            viewMode === "detailed"
+                                ? "active"
+                                : ""
+                        }"
+                        id="detailedViewButton"
+                    >
+                        Detailed View
+                    </button>
+
+
+                    <button
+                        class="history-view-button ${
+                            viewMode === "compact"
+                                ? "active"
+                                : ""
+                        }"
+                        id="compactViewButton"
+                    >
+                        Compact View
+                    </button>
+
+                </div>
+
+
                 <div class="history-container">
 
                     <div class="history-left-line"></div>
+
 
                     <div class="history-cards">
 
                         ${cardsHTML}
 
                     </div>
+
 
                     <div class="history-right-line"></div>
 
@@ -956,8 +1069,85 @@ function showExpenseHistory() {
 
         `;
 
+
+        /* ============================= */
+        /* DETAILED VIEW BUTTON */
+        /* ============================= */
+
+        document
+            .getElementById("detailedViewButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    if (viewMode !== "detailed") {
+
+                        showExpenseHistory("detailed");
+
+                    }
+
+                }
+            );
+
+
+        /* ============================= */
+        /* COMPACT VIEW BUTTON */
+        /* ============================= */
+
+        document
+            .getElementById("compactViewButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    if (viewMode !== "compact") {
+
+                        showExpenseHistory("compact");
+
+                    }
+
+                }
+            );
+
+
+        /* ============================= */
+        /* COMPACT EXPENSE CLICK */
+        /* ============================= */
+
+        if (viewMode === "compact") {
+
+            document
+                .querySelectorAll(
+                    ".expense-history-card.compact"
+                )
+                .forEach(
+                    function(card) {
+
+                        card.addEventListener(
+                            "click",
+                            function() {
+
+                                const index =
+                                    Number(
+                                        card.dataset.expenseIndex
+                                    );
+
+                                showExpenseDetails(index);
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
     }
 
+
+    /* ============================= */
+    /* HISTORY BACK BUTTON */
+    /* ============================= */
 
     document
         .getElementById("historyBackButton")
@@ -972,6 +1162,142 @@ function showExpenseHistory() {
 
 }
 
+
+/* ============================= */
+/* EXPENSE FULL DETAILS */
+/* ============================= */
+
+function showExpenseDetails(index) {
+
+    const expense =
+        expenses[index];
+
+
+    if (!expense) {
+
+        showExpenseHistory("compact");
+
+        return;
+
+    }
+
+
+    content.innerHTML = `
+
+        <div class="history-page">
+
+            <button
+                class="history-back-button"
+                id="expenseDetailBackButton"
+            >
+                ← Back
+            </button>
+
+
+            <h1>Expense Details</h1>
+
+
+            <div class="expense-detail-page">
+
+                <div class="expense-detail-card">
+
+                    <div class="history-card-top">
+
+                        <h2>
+                            ${escapeHTML(
+                                expense.name
+                            )}
+                        </h2>
+
+                        <div class="history-rate">
+                            $${expense.rate}
+                        </div>
+
+                    </div>
+
+
+                    <div class="history-details">
+
+                        <div>
+
+                            <span>Date</span>
+
+                            <strong>
+                                ${formatDate(
+                                    expense.date
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>Time</span>
+
+                            <strong>
+                                ${formatTime(
+                                    expense.time
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>Family Member</span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    expense.familyMember
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>Category</span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    expense.category
+                                )}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /* ============================= */
+    /* BACK TO COMPACT VIEW */
+    /* ============================= */
+
+    document
+        .getElementById(
+            "expenseDetailBackButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                showExpenseHistory("compact");
+
+            }
+        );
+
+}
 
 /* ============================= */
 /* HELPER FUNCTIONS */
@@ -1638,3 +1964,5 @@ accountPasswordToggle.addEventListener(
 
     }
 );
+
+
