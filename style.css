@@ -2032,3 +2032,968 @@ body {
     }
 
 }
+
+
+/* ============================= */
+/* SETTINGS */
+/* ============================= */
+
+.settings-page {
+
+    width: min(850px, 92%);
+
+    margin: 40px auto;
+
+}
+
+
+.settings-page h1 {
+
+    text-align: center;
+
+    margin-bottom: 35px;
+
+}
+
+
+.settings-section {
+
+    width: 100%;
+
+    background-color: white;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 14px;
+
+    padding: 22px 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+
+}
+
+
+.settings-section-info {
+
+    text-align: left;
+
+}
+
+
+.settings-section-info h2 {
+
+    margin: 0 0 6px;
+
+    font-size: 20px;
+
+}
+
+
+.settings-section-info p {
+
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+.logout-button {
+
+    border: none;
+
+    background-color: #dc3545;
+
+    color: white;
+
+    padding: 11px 20px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    flex-shrink: 0;
+
+}
+
+
+.logout-button:hover {
+
+    background-color: #c82333;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ============================= */
+/* SETTINGS MOBILE */
+/* ============================= */
+
+@media (max-width: 480px) {
+
+    .settings-page {
+
+        width: 100%;
+
+        margin: 25px auto;
+
+    }
+
+
+    .settings-section {
+
+        padding: 18px;
+
+        gap: 15px;
+
+    }
+
+
+    .settings-section-info h2 {
+
+        font-size: 17px;
+
+    }
+
+
+    .settings-section-info p {
+
+        font-size: 13px;
+
+    }
+
+
+    .logout-button {
+
+        padding: 10px 14px;
+
+        font-size: 13px;
+
+    }
+
+}
+
+
+/* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+body,
+.navbar,
+.new-expense-bar,
+.expense-form-card,
+.expense-history-card,
+.settings-section,
+.login-box,
+.sign-up-box,
+.sign-in-box,
+.account-info-box,
+.account-icon,
+.expense-step-content input,
+.expense-step-content select,
+.sign-up-box input,
+.sign-in-box > input,
+.password-container,
+.sign-in-box .password-container,
+.sign-in-box .password-container button,
+.history-view-button,
+.step-tab,
+.rate-input {
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+
+}
+
+
+body.dark-mode {
+
+    background-color: #101318;
+    color: #f1f5f9;
+
+}
+
+
+/* ============================= */
+/* NAVIGATION */
+/* ============================= */
+
+body.dark-mode .navbar {
+
+    background-color: #171b22;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.35);
+
+}
+
+
+body.dark-mode .nav-item {
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .nav-item:hover {
+
+    background-color: #252b35;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.35);
+
+}
+
+
+/* ============================= */
+/* HOME */
+/* ============================= */
+
+body.dark-mode .new-expense-bar {
+
+    background-color: #171b22;
+
+    color: #f1f5f9;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.35);
+
+}
+
+
+body.dark-mode .new-expense-bar:hover {
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.5);
+
+}
+
+
+/* ============================= */
+/* EXPENSE FORM */
+/* ============================= */
+
+body.dark-mode .expense-form-card {
+
+    background-color: #171b22;
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .expense-back-button {
+
+    color: #b8c0cc;
+
+}
+
+
+body.dark-mode .expense-back-button:hover {
+
+    color: #ffffff;
+
+}
+
+
+body.dark-mode .step-tab {
+
+    background-color: #292f38;
+
+    color: #aeb7c4;
+
+}
+
+
+body.dark-mode .step-tab.active {
+
+    background-color: #1877f2;
+
+    color: white;
+
+}
+
+
+body.dark-mode .expense-step-content label {
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .expense-step-content input,
+body.dark-mode .expense-step-content select {
+
+    background-color: #202630;
+
+    color: #f1f5f9;
+
+    border-color: #3a4350;
+
+}
+
+
+body.dark-mode .expense-step-content input::placeholder {
+
+    color: #8f99a8;
+
+}
+
+
+body.dark-mode .rate-input {
+
+    border-color: #3a4350;
+
+    background-color: #202630;
+
+}
+
+
+body.dark-mode .rate-input span {
+
+    color: #c3cad4;
+
+}
+
+
+/* ============================= */
+/* HISTORY */
+/* ============================= */
+
+body.dark-mode .history-page,
+body.dark-mode .history-empty-page {
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .expense-count,
+body.dark-mode .history-empty-page p {
+
+    color: #a9b2bf;
+
+}
+
+
+body.dark-mode .history-back-button {
+
+    color: #b8c0cc;
+
+}
+
+
+body.dark-mode .history-back-button:hover {
+
+    color: #ffffff;
+
+}
+
+
+body.dark-mode .history-left-line,
+body.dark-mode .history-right-line {
+
+    background-color: #3a4350;
+
+}
+
+
+body.dark-mode .expense-history-card {
+
+    background-color: #171b22;
+
+    color: #f1f5f9;
+
+    border-color: #303744;
+
+}
+
+
+body.dark-mode .history-card-top {
+
+    border-bottom-color: #303744;
+
+}
+
+
+body.dark-mode .history-card-top h2 {
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .history-details span {
+
+    color: #909aa8;
+
+}
+
+
+body.dark-mode .history-details strong {
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .history-view-button {
+
+    background-color: #292f38;
+
+    color: #c5ccd6;
+
+}
+
+
+body.dark-mode .history-view-button:hover {
+
+    background-color: #343c48;
+
+}
+
+
+body.dark-mode .history-view-button.active {
+
+    background-color: #1877f2;
+
+    color: white;
+
+}
+
+
+/* ============================= */
+/* SETTINGS */
+/* ============================= */
+
+body.dark-mode .settings-page {
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .settings-section {
+
+    background-color: #171b22;
+
+    color: #f1f5f9;
+
+    border-color: #303744;
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.35);
+
+}
+
+
+.settings-section + .settings-section {
+
+    margin-top: 18px;
+
+}
+
+
+body.dark-mode .settings-section-info p {
+
+    color: #a9b2bf;
+
+}
+
+
+/* ============================= */
+/* DARK MODE TOGGLE */
+/* ============================= */
+
+.theme-toggle {
+
+    border: none;
+
+    background: transparent;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    flex-shrink: 0;
+
+}
+
+
+.theme-toggle-track {
+
+    width: 48px;
+
+    height: 26px;
+
+    border-radius: 999px;
+
+    background-color: #c9ced6;
+
+    padding: 3px;
+
+    display: flex;
+
+    align-items: center;
+
+    transition:
+        background-color 0.25s ease;
+
+}
+
+
+.theme-toggle-knob {
+
+    width: 20px;
+
+    height: 20px;
+
+    border-radius: 50%;
+
+    background-color: white;
+
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.25);
+
+    transform: translateX(0);
+
+    transition:
+        transform 0.25s ease;
+
+}
+
+
+.theme-toggle.active .theme-toggle-track {
+
+    background-color: #1877f2;
+
+}
+
+
+.theme-toggle.active .theme-toggle-knob {
+
+    transform: translateX(22px);
+
+}
+
+
+.theme-toggle-label {
+
+    min-width: 25px;
+
+    color: #555;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+body.dark-mode .theme-toggle-label {
+
+    color: #dce2ea;
+
+}
+
+
+body.dark-mode .theme-toggle-track {
+
+    background-color: #1877f2;
+
+}
+
+
+/* ============================= */
+/* LOGIN / SIGN UP / SIGN IN */
+/* ============================= */
+
+body.dark-mode .login-screen,
+body.dark-mode .sign-up-page,
+body.dark-mode .sign-in-page {
+
+    background-color: #101318;
+
+}
+
+
+body.dark-mode .login-box,
+body.dark-mode .sign-up-box,
+body.dark-mode .sign-in-box,
+body.dark-mode .account-info-box {
+
+    background-color: #171b22;
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .sign-in-side {
+
+    background-color: #202630;
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .sign-up-side {
+
+    background-color: #171b22;
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .account-button,
+body.dark-mode .sign-up-box h1,
+body.dark-mode .sign-up-box label,
+body.dark-mode .sign-in-box label,
+body.dark-mode .sign-in-box h1,
+body.dark-mode .account-info-box h2 {
+
+    color: #f1f5f9;
+
+}
+
+
+body.dark-mode .sign-up-box input,
+body.dark-mode .sign-in-box > input {
+
+    background-color: #202630;
+
+    color: #f1f5f9;
+
+    border-color: #3a4350;
+
+}
+
+
+body.dark-mode .sign-up-box input::placeholder,
+body.dark-mode .sign-in-box > input::placeholder {
+
+    color: #8f99a8;
+
+}
+
+
+/* ============================= */
+/* PASSWORD AREAS */
+/* ============================= */
+
+body.dark-mode .password-container,
+body.dark-mode .sign-in-box .password-container {
+
+    background-color: #202630;
+
+    border-color: #3a4350;
+
+}
+
+
+body.dark-mode #passwordToggleBtn,
+body.dark-mode .sign-in-box .password-container button {
+
+    background-color: #292f38;
+
+    color: #d3dae4;
+
+}
+
+
+body.dark-mode #passwordToggleBtn:hover,
+body.dark-mode .sign-in-box .password-container button:hover {
+
+    background-color: #343c48;
+
+}
+
+
+body.dark-mode #pinInput {
+
+    background-color: #292f38;
+
+    color: #f1f5f9;
+
+}
+
+
+/* ============================= */
+/* ACCOUNT POPUP */
+/* ============================= */
+
+body.dark-mode .account-icon {
+
+    background-color: #171b22;
+
+    color: #f1f5f9;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.4);
+
+}
+
+
+body.dark-mode .account-icon:hover {
+
+    background-color: #252b35;
+
+}
+
+
+body.dark-mode .account-detail {
+
+    border-bottom-color: #303744;
+
+}
+
+
+body.dark-mode .account-detail strong {
+
+    color: #e5eaf0;
+
+}
+
+
+body.dark-mode .account-detail span {
+
+    color: #b0b9c6;
+
+}
+
+
+body.dark-mode .account-back-button {
+
+    color: #b8c0cc;
+
+}
+
+
+body.dark-mode .account-back-button:hover {
+
+    color: #ffffff;
+
+}
+
+
+/* ============================= */
+/* MOBILE DARK MODE TOGGLE */
+/* ============================= */
+
+@media (max-width: 480px) {
+
+    .theme-toggle-track {
+
+        width: 44px;
+
+        height: 24px;
+
+    }
+
+
+    .theme-toggle-knob {
+
+        width: 18px;
+
+        height: 18px;
+
+    }
+
+
+    .theme-toggle.active .theme-toggle-knob {
+
+        transform: translateX(20px);
+
+    }
+
+}
+
+
+/* ============================= */
+/* DARK MODE HISTORY FIX */
+/* ============================= */
+
+
+/* COMPACT HISTORY TEXT */
+
+body.dark-mode .compact-history-name {
+
+    color: #f1f3f5;
+
+}
+
+
+body.dark-mode .compact-history-date {
+
+    color: #b8bec7;
+
+}
+
+
+body.dark-mode .compact-history-rate {
+
+    color: #4da3ff;
+
+}
+
+
+/* ENLARGED EXPENSE DETAIL CARD */
+
+body.dark-mode .expense-detail-card {
+
+    background-color: #1f2329;
+
+    border-color: #343a42;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.35);
+
+}
+
+
+/* LINE UNDER EXPENSE NAME */
+
+body.dark-mode .expense-detail-card .history-card-top {
+
+    border-bottom-color: #343a42;
+
+}
+
+
+/* DETAIL PAGE TEXT */
+
+body.dark-mode .expense-detail-card h2 {
+
+    color: #f1f3f5;
+
+}
+
+
+body.dark-mode .expense-detail-card .history-rate {
+
+    color: #4da3ff;
+
+}
+
+
+body.dark-mode .expense-detail-card .history-details span {
+
+    color: #9da5b0;
+
+}
+
+
+body.dark-mode .expense-detail-card .history-details strong {
+
+    color: #f1f3f5;
+
+}
+
+
+
+ /* ============================= */
+ /* DELETE ACCOUNT */
+ /* ============================= */
+
+.delete-account-button {
+
+    border: none;
+
+    background-color: #dc3545;
+
+    color: white;
+
+    padding: 11px 20px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+
+    flex-shrink: 0;
+
+}
+
+
+.delete-account-button:hover {
+
+    background-color: #c82333;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ============================= */
+/* DELETE ACCOUNT - DARK MODE */
+/* ============================= */
+
+body.dark-mode .delete-account-button {
+
+    background-color: #e04452;
+
+    color: white;
+
+}
+
+
+body.dark-mode .delete-account-button:hover {
+
+    background-color: #f05260;
+
+}
+
+
+/* ============================= */
+/* DELETE ACCOUNT - MOBILE */
+/* ============================= */
+
+@media (max-width: 480px) {
+
+    .delete-account-button {
+
+        padding: 10px 14px;
+
+        font-size: 13px;
+
+    }
+
+}
+
+

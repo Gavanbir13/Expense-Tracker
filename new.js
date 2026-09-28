@@ -10,8 +10,14 @@ homeBtn.onclick = function() {
 
 
 /* ============================= */
-/* TEMPORARY EXPENSE DATA */
+/* TEMPORARY ACCOUNT + EXPENSE DATA */
 /* ============================= */
+
+let accounts = [];
+
+let currentAccount = null;
+
+let darkModeEnabled = false;
 
 let expenses = [];
 
@@ -93,22 +99,157 @@ howBtn.onclick = function() {
 };
 
 
-/* ============================= */
-/* SETTINGS */
-/* ============================= */
-
 settingsBtn.onclick = function() {
 
-    content.innerHTML = `
-        <h1>Settings</h1>
+    const isDark =
+        currentAccount
+            ? !!currentAccount.darkMode
+            : false;
 
-        <p>
-            Your settings will appear here.
-        </p>
+
+    content.innerHTML = `
+
+        <div class="settings-page">
+
+            <h1>Settings</h1>
+
+
+            <!-- DARK MODE -->
+
+            <div class="settings-section">
+
+                <div class="settings-section-info">
+
+                    <h2>Dark Mode</h2>
+
+                    <p>
+                        Use a darker appearance throughout the website.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="theme-toggle ${isDark ? "active" : ""}"
+                    id="darkModeToggle"
+                    type="button"
+                    aria-pressed="${isDark}"
+                >
+
+                    <span class="theme-toggle-track">
+
+                        <span class="theme-toggle-knob"></span>
+
+                    </span>
+
+
+                    <span class="theme-toggle-label">
+
+                        ${isDark ? "On" : "Off"}
+
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- DELETE ACCOUNT -->
+
+            <div class="settings-section">
+
+                <div class="settings-section-info">
+
+                    <h2>Delete Account</h2>
+
+                    <p>
+                        Permanently delete your current account and all its expense history.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="delete-account-button"
+                    id="deleteAccountButton"
+                    type="button"
+                >
+                    Delete Account
+                </button>
+
+            </div>
+
+
+            <!-- LOG OUT -->
+
+            <div class="settings-section">
+
+                <div class="settings-section-info">
+
+                    <h2>Log Out</h2>
+
+                    <p>
+                        Log out of your current account.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="logout-button"
+                    id="logoutButton"
+                    type="button"
+                >
+                    Log Out
+                </button>
+
+            </div>
+
+        </div>
+
     `;
 
-};
 
+    /* ============================= */
+    /* DARK MODE TOGGLE */
+    /* ============================= */
+
+    document
+        .getElementById("darkModeToggle")
+        .addEventListener(
+            "click",
+            function() {
+
+                setDarkMode(!darkModeEnabled);
+
+            }
+        );
+
+
+    /* ============================= */
+    /* DELETE ACCOUNT */
+    /* ============================= */
+
+    document
+        .getElementById("deleteAccountButton")
+        .addEventListener(
+            "click",
+            deleteCurrentAccount
+        );
+
+
+    /* ============================= */
+    /* LOG OUT */
+    /* ============================= */
+
+    document
+        .getElementById("logoutButton")
+        .addEventListener(
+            "click",
+            logoutAccount
+        );
+
+};
 
 /* ============================= */
 /* NEW EXPENSE */
@@ -805,6 +946,8 @@ function showExpenseForm() {
 }
 
 
+
+
 /* ============================= */
 /* EXPENSE HISTORY */
 /* ============================= */
@@ -1365,6 +1508,171 @@ function escapeHTML(text) {
 
 
 /* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+function applyDarkMode() {
+
+    document.body.classList.toggle(
+        "dark-mode",
+        darkModeEnabled
+    );
+
+}
+
+
+function setDarkMode(enabled) {
+
+    darkModeEnabled = enabled;
+
+    if (currentAccount) {
+
+        currentAccount.darkMode = enabled;
+
+    }
+
+    applyDarkMode();
+
+
+    const toggle =
+        document.getElementById("darkModeToggle");
+
+    if (toggle) {
+
+        toggle.classList.toggle(
+            "active",
+            enabled
+        );
+
+        toggle.setAttribute(
+            "aria-pressed",
+            String(enabled)
+        );
+
+
+        const label =
+            toggle.querySelector(
+                ".theme-toggle-label"
+            );
+
+        if (label) {
+
+            label.textContent =
+                enabled ? "On" : "Off";
+
+        }
+
+    }
+
+}
+
+
+applyDarkMode();
+
+
+ /* ============================= */
+ /* DELETE ACCOUNT */
+ /* ============================= */
+
+function deleteCurrentAccount() {
+
+    if (!currentAccount) {
+
+        return;
+
+    }
+
+
+    /* Remove the current account */
+
+    accounts =
+        accounts.filter(
+            function(account) {
+
+                return account !== currentAccount;
+
+            }
+        );
+
+
+    /* Clear current account */
+
+    currentAccount = null;
+
+    accountUsername = "";
+    accountPassword = "";
+    accountPin = "";
+
+    expenses = [];
+
+
+    /* Reset dark mode */
+
+    darkModeEnabled = false;
+
+    applyDarkMode();
+
+
+    /* Close account popup */
+
+    accountOverlay.style.display =
+        "none";
+
+
+    /* Hide account icon */
+
+    accountIcon.style.display =
+        "none";
+
+
+    /* Hide application pages */
+
+    signInPage.style.display =
+        "none";
+
+    signUpPage.style.display =
+        "none";
+
+
+    /* Return to login screen */
+
+    loginScreen.style.display =
+        "flex";
+
+}
+
+
+/* ============================= */
+/* LOG OUT */
+/* ============================= */
+
+function logoutAccount() {
+
+    currentAccount = null;
+
+    darkModeEnabled = false;
+
+    applyDarkMode();
+
+    accountUsername = "";
+    accountPassword = "";
+    accountPin = "";
+
+    expenses = [];
+
+    accountOverlay.style.display = "none";
+
+    accountIcon.style.display = "none";
+
+    signInPage.style.display = "none";
+
+    signUpPage.style.display = "none";
+
+    loginScreen.style.display = "flex";
+
+}
+
+/* ============================= */
 /* LOGIN SCREEN */
 /* ============================= */
 
@@ -1654,17 +1962,67 @@ enterAccountBtn.addEventListener(
         }
 
 
-        signInMessage.textContent = "";
+        /* ============================= */
+        /* FIND ACCOUNT */
+        /* ============================= */
+
+        const foundAccount =
+            accounts.find(
+                function(account) {
+
+                    return (
+                        account.username ===
+                            enteredUsername &&
+
+                        account.password ===
+                            enteredPassword &&
+
+                        account.pin ===
+                            enteredPin
+                    );
+
+                }
+            );
+
+
+        if (!foundAccount) {
+
+            signInMessage.textContent =
+                "Account information is incorrect.";
+
+            return;
+
+        }
+
+
+        /* ============================= */
+        /* ENTER FOUND ACCOUNT */
+        /* ============================= */
+
+        currentAccount =
+            foundAccount;
+
+
+        darkModeEnabled =
+            !!foundAccount.darkMode;
+
+        applyDarkMode();
 
 
         accountUsername =
-            enteredUsername;
+            foundAccount.username;
 
         accountPassword =
-            enteredPassword;
+            foundAccount.password;
 
         accountPin =
-            enteredPin;
+            foundAccount.pin;
+
+
+        /* Connect expenses to this account */
+
+        expenses =
+            foundAccount.expenses;
 
 
         displayUsername.textContent =
@@ -1683,6 +2041,9 @@ enterAccountBtn.addEventListener(
             "Show Pass";
 
 
+        signInMessage.textContent = "";
+
+
         signInPage.style.display =
             "none";
 
@@ -1698,7 +2059,6 @@ enterAccountBtn.addEventListener(
 
     }
 );
-
 
 /* ============================= */
 /* SIGN UP BUTTON */
@@ -1841,9 +2201,7 @@ saveAccountBtn.addEventListener(
         }
 
 
-        if (
-            !isValidPassword(password)
-        ) {
+        if (!isValidPassword(password)) {
 
             signupMessage.textContent =
                 "Password needs a letter, a number, and at least one of ! @ # $ & > _";
@@ -1853,14 +2211,85 @@ saveAccountBtn.addEventListener(
         }
 
 
+        /* ============================= */
+        /* CHECK DUPLICATE USERNAME */
+        /* ============================= */
+
+        const usernameExists =
+            accounts.some(
+                function(account) {
+
+                    return (
+                        account.username.toLowerCase() ===
+                        username.toLowerCase()
+                    );
+
+                }
+            );
+
+
+        if (usernameExists) {
+
+            signupMessage.textContent =
+                "That username is already being used.";
+
+            return;
+
+        }
+
+
+        /* ============================= */
+        /* CREATE NEW ACCOUNT */
+        /* ============================= */
+
+        const newAccount = {
+
+            username: username,
+
+            password: password,
+
+            pin: pinInput.value,
+
+            expenses: [],
+
+            darkMode: false
+
+        };
+
+
+        /* Store account temporarily */
+
+        accounts.push(
+            newAccount
+        );
+
+
+        /* Make this the current account */
+
+        currentAccount =
+            newAccount;
+
+
+        darkModeEnabled =
+            false;
+
+        applyDarkMode();
+
+
         accountUsername =
-            username;
+            newAccount.username;
 
         accountPassword =
-            password;
+            newAccount.password;
 
         accountPin =
-            pinInput.value;
+            newAccount.pin;
+
+
+        /* Connect expenses to this account */
+
+        expenses =
+            newAccount.expenses;
 
 
         displayUsername.textContent =
@@ -1875,9 +2304,11 @@ saveAccountBtn.addEventListener(
         displayPassword.dataset.visible =
             "false";
 
-
         accountPasswordToggle.textContent =
             "Show Pass";
+
+
+        signupMessage.textContent = "";
 
 
         signUpPage.style.display =
@@ -1895,7 +2326,6 @@ saveAccountBtn.addEventListener(
 
     }
 );
-
 
 /* ============================= */
 /* ACCOUNT ICON */
