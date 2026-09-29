@@ -2997,3 +2997,637 @@ body.dark-mode .delete-account-button:hover {
 }
 
 
+/* ============================= */
+/* ACCOUNTS OPTION */
+/* ============================= */
+
+.accounts-login-option {
+
+    width: 100%;
+
+    margin-top: 12px;
+
+    text-align: center;
+
+    color: #007bff;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.accounts-login-option:hover {
+
+    color: #0056b3;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ============================= */
+/* ACCOUNTS FULL PAGE */
+/* ============================= */
+
+.accounts-page {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 5000;
+
+    background-color: #f5f5f5;
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    overflow: hidden;
+
+}
+
+
+.accounts-page-content {
+
+    width: 100%;
+
+    max-width: 1000px;
+
+    text-align: center;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+
+}
+
+
+.accounts-page-content h1 {
+
+    margin: 0 0 8px;
+
+    color: #222;
+
+    font-size: 34px;
+
+}
+
+
+.accounts-subtitle {
+
+    margin: 0 0 35px;
+
+    color: #777;
+
+    font-size: 15px;
+
+}
+
+
+/* ============================= */
+/* BACK BUTTON */
+/* ============================= */
+
+.accounts-back-button {
+
+    position: absolute;
+
+    top: 25px;
+    left: 30px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #555;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    padding: 8px 12px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.accounts-back-button:hover {
+
+    color: #000;
+
+    transform: translateX(-2px);
+
+}
+
+
+/* ============================= */
+/* CAROUSEL */
+/* ============================= */
+
+.accounts-carousel-wrapper {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 18px;
+
+}
+
+
+.accounts-carousel-viewport {
+
+    width: min(
+        720px,
+        calc(100vw - 150px)
+    );
+
+    overflow: hidden;
+
+    position: relative;
+
+    padding: 20px 0 30px;
+
+}
+
+
+.accounts-carousel-track {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 55px;
+
+    width: max-content;
+
+    transition:
+        transform 0.45s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        );
+
+}
+
+
+/* ============================= */
+/* ACCOUNT ITEM */
+/* ============================= */
+
+.account-carousel-card {
+
+    flex: 0 0 190px;
+
+    width: 190px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+    cursor: pointer;
+
+    opacity: 0.48;
+
+    transform: scale(0.78);
+
+    transition:
+        transform 0.45s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        ),
+        opacity 0.45s ease;
+
+    user-select: none;
+
+}
+
+
+.account-carousel-card.selected {
+
+    opacity: 1;
+
+    transform: scale(1);
+
+}
+
+
+/* ============================= */
+/* WHATSAPP-STYLE PROFILE CIRCLE */
+/* ============================= */
+
+.account-profile-circle {
+
+    width: 145px;
+
+    height: 145px;
+
+    border-radius: 50%;
+
+    background-color: #e9ecef;
+
+    border: 4px solid #ffffff;
+
+    box-shadow:
+        0 6px 20px
+        rgba(0, 0, 0, 0.14);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+}
+
+
+.account-profile-circle i {
+
+    font-size: 64px;
+
+    color: #9aa0a6;
+
+}
+
+
+/* ============================= */
+/* USERNAME */
+/* ============================= */
+
+.account-carousel-username {
+
+    margin-top: 17px;
+
+    max-width: 190px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #222;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+}
+
+
+/* ============================= */
+/* ARROWS */
+/* ============================= */
+
+.account-carousel-arrow {
+
+    width: 46px;
+
+    height: 46px;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background-color: white;
+
+    color: #555;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0, 0, 0, 0.12);
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 17px;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.account-carousel-arrow:hover {
+
+    background-color: #007bff;
+
+    color: white;
+
+    transform: scale(1.08);
+
+}
+
+
+/* ============================= */
+/* ACCOUNT COUNT */
+/* ============================= */
+
+.accounts-total {
+
+    margin-top: 10px;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+/* ============================= */
+/* NO ACCOUNTS */
+/* ============================= */
+
+.no-accounts-message {
+
+    width: 400px;
+
+    color: #777;
+
+    font-size: 16px;
+
+}
+
+
+/* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+body.dark-mode
+.accounts-page {
+
+    background-color: #12161b;
+
+}
+
+
+body.dark-mode
+.accounts-page-content h1 {
+
+    color: #f1f3f5;
+
+}
+
+
+body.dark-mode
+.accounts-subtitle {
+
+    color: #9da5b0;
+
+}
+
+
+body.dark-mode
+.accounts-back-button {
+
+    color: #b8bec7;
+
+}
+
+
+body.dark-mode
+.accounts-back-button:hover {
+
+    color: #ffffff;
+
+}
+
+
+body.dark-mode
+.accounts-login-option {
+
+    color: #4da3ff;
+
+}
+
+
+body.dark-mode
+.accounts-login-option:hover {
+
+    color: #70b7ff;
+
+}
+
+
+body.dark-mode
+.account-profile-circle {
+
+    background-color: #292f36;
+
+    border-color: #343a42;
+
+    box-shadow:
+        0 6px 20px
+        rgba(0, 0, 0, 0.4);
+
+}
+
+
+body.dark-mode
+.account-profile-circle i {
+
+    color: #9da5b0;
+
+}
+
+
+body.dark-mode
+.account-carousel-username {
+
+    color: #f1f3f5;
+
+}
+
+
+body.dark-mode
+.account-carousel-arrow {
+
+    background-color: #1f2329;
+
+    color: #d5d9de;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0, 0, 0, 0.35);
+
+}
+
+
+body.dark-mode
+.account-carousel-arrow:hover {
+
+    background-color: #1877f2;
+
+    color: white;
+
+}
+
+
+body.dark-mode
+.accounts-total {
+
+    color: #9da5b0;
+
+}
+
+
+body.dark-mode
+.no-accounts-message {
+
+    color: #9da5b0;
+
+}
+
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media (max-width: 600px) {
+
+    .accounts-page-content {
+
+        padding: 25px 10px;
+
+    }
+
+
+    .accounts-page-content h1 {
+
+        font-size: 28px;
+
+    }
+
+
+    .accounts-subtitle {
+
+        margin-bottom: 25px;
+
+    }
+
+
+    .accounts-back-button {
+
+        top: 15px;
+
+        left: 15px;
+
+    }
+
+
+    .accounts-carousel-wrapper {
+
+        gap: 5px;
+
+    }
+
+
+    .accounts-carousel-viewport {
+
+        width:
+            calc(100vw - 90px);
+
+        padding:
+            15px 0 25px;
+
+    }
+
+
+    .accounts-carousel-track {
+
+        gap: 25px;
+
+    }
+
+
+    .account-carousel-card {
+
+        flex-basis: 150px;
+
+        width: 150px;
+
+    }
+
+
+    .account-profile-circle {
+
+        width: 115px;
+
+        height: 115px;
+
+    }
+
+
+    .account-profile-circle i {
+
+        font-size: 50px;
+
+    }
+
+
+    .account-carousel-username {
+
+        max-width: 150px;
+
+        font-size: 16px;
+
+        margin-top: 13px;
+
+    }
+
+
+    .account-carousel-arrow {
+
+        width: 38px;
+
+        height: 38px;
+
+        font-size: 14px;
+
+    }
+
+}

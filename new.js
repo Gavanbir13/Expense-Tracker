@@ -21,7 +21,6 @@ let darkModeEnabled = false;
 
 let expenses = [];
 
-
 /* ============================= */
 /* HOME */
 /* ============================= */
@@ -81,6 +80,510 @@ function showHome(successMessage = "") {
 
 }
 
+
+/* ============================= */
+/* ACCOUNTS PAGE */
+/* ============================= */
+
+let selectedAccountIndex = 0;
+
+
+function showAccountsPage() {
+
+    let accountsPage =
+        document.getElementById(
+            "accountsPage"
+        );
+
+
+    if (!accountsPage) {
+
+        accountsPage =
+            document.createElement("div");
+
+        accountsPage.id =
+            "accountsPage";
+
+        accountsPage.className =
+            "accounts-page";
+
+
+        accountsPage.innerHTML = `
+
+            <button
+                class="accounts-back-button"
+                id="accountsBackButton"
+            >
+                ← Back
+            </button>
+
+
+            <div class="accounts-page-content">
+
+                <h1>Accounts</h1>
+
+                <p class="accounts-subtitle">
+                    Choose an account to continue
+                </p>
+
+
+                <div class="accounts-carousel-wrapper">
+
+                    <button
+                        class="account-carousel-arrow left"
+                        id="accountArrowLeft"
+                        aria-label="Previous account"
+                    >
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+
+                    <div
+                        class="accounts-carousel-viewport"
+                        id="accountsCarouselViewport"
+                    >
+
+                        <div
+                            class="accounts-carousel-track"
+                            id="accountsCarouselTrack"
+                        ></div>
+
+                    </div>
+
+
+                    <button
+                        class="account-carousel-arrow right"
+                        id="accountArrowRight"
+                        aria-label="Next account"
+                    >
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="accounts-total"
+                    id="accountsTotal"
+                ></div>
+
+            </div>
+
+        `;
+
+
+        document.body.appendChild(
+            accountsPage
+        );
+
+
+        document
+            .getElementById("accountsBackButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    accountsPage.remove();
+
+                    loginScreen.style.display =
+                        "flex";
+
+                    signInPage.style.display =
+                        "none";
+
+                    signUpPage.style.display =
+                        "none";
+
+                }
+            );
+
+
+        document
+            .getElementById("accountArrowLeft")
+            .addEventListener(
+                "click",
+                function() {
+
+                    moveAccountsCarousel(-1);
+
+                }
+            );
+
+
+        document
+            .getElementById("accountArrowRight")
+            .addEventListener(
+                "click",
+                function() {
+
+                    moveAccountsCarousel(1);
+
+                }
+            );
+
+    }
+
+
+    loginScreen.style.display =
+        "none";
+
+    signInPage.style.display =
+        "none";
+
+    signUpPage.style.display =
+        "none";
+
+
+    accountsPage.style.display =
+        "flex";
+
+
+    renderAccountsCarousel();
+
+}
+
+
+function renderAccountsCarousel() {
+
+    const track =
+        document.getElementById(
+            "accountsCarouselTrack"
+        );
+
+    const totalText =
+        document.getElementById(
+            "accountsTotal"
+        );
+
+
+    if (!track || !totalText) {
+        return;
+    }
+
+
+    track.innerHTML = "";
+
+
+    if (accounts.length === 0) {
+
+        track.innerHTML = `
+
+            <div class="no-accounts-message">
+
+                No accounts yet.
+
+            </div>
+
+        `;
+
+        totalText.textContent =
+            "0 accounts";
+
+        return;
+
+    }
+
+
+    if (
+        selectedAccountIndex < 0
+    ) {
+
+        selectedAccountIndex = 0;
+
+    }
+
+
+    if (
+        selectedAccountIndex >=
+        accounts.length
+    ) {
+
+        selectedAccountIndex =
+            accounts.length - 1;
+
+    }
+
+
+    accounts.forEach(
+        function(account, index) {
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "account-carousel-card";
+
+
+            if (
+                index ===
+                selectedAccountIndex
+            ) {
+
+                card.classList.add(
+                    "selected"
+                );
+
+            }
+
+
+            card.innerHTML = `
+
+                <div class="account-profile-circle">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+
+                <div class="account-carousel-username">
+
+                    ${escapeHTML(
+                        account.username
+                    )}
+
+                </div>
+
+            `;
+
+
+            card.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        index !==
+                        selectedAccountIndex
+                    ) {
+
+                        selectedAccountIndex =
+                            index;
+
+                        renderAccountsCarousel();
+
+                        return;
+
+                    }
+
+
+                    enterAccountFromCarousel(
+                        account
+                    );
+
+                }
+            );
+
+
+            track.appendChild(card);
+
+        }
+    );
+
+
+    totalText.textContent =
+        accounts.length === 1
+            ? "1 account"
+            : `${accounts.length} accounts`;
+
+
+    requestAnimationFrame(
+        function() {
+
+            moveAccountsCarousel(
+                0
+            );
+
+        }
+    );
+
+}
+
+
+function moveAccountsCarousel(
+    direction
+) {
+
+    if (
+        accounts.length === 0
+    ) {
+        return;
+    }
+
+
+    if (
+        direction !== 0
+    ) {
+
+        selectedAccountIndex +=
+            direction;
+
+
+        if (
+            selectedAccountIndex < 0
+        ) {
+
+            selectedAccountIndex = 0;
+
+        }
+
+
+        if (
+            selectedAccountIndex >=
+            accounts.length
+        ) {
+
+            selectedAccountIndex =
+                accounts.length - 1;
+
+        }
+
+    }
+
+
+    const viewport =
+        document.getElementById(
+            "accountsCarouselViewport"
+        );
+
+    const track =
+        document.getElementById(
+            "accountsCarouselTrack"
+        );
+
+
+    if (!viewport || !track) {
+        return;
+    }
+
+
+    const selectedCard =
+        track.children[
+            selectedAccountIndex
+        ];
+
+
+    if (!selectedCard) {
+        return;
+    }
+
+
+    const viewportCenter =
+        viewport.clientWidth / 2;
+
+
+    const cardCenter =
+        selectedCard.offsetLeft +
+        selectedCard.offsetWidth / 2;
+
+
+    const translateX =
+        viewportCenter -
+        cardCenter;
+
+
+    track.style.transform =
+        `translateX(${translateX}px)`;
+
+
+    document
+        .querySelectorAll(
+            ".account-carousel-card"
+        )
+        .forEach(
+            function(card, index) {
+
+                card.classList.toggle(
+                    "selected",
+                    index ===
+                    selectedAccountIndex
+                );
+
+            }
+        );
+
+}
+
+
+function enterAccountFromCarousel(
+    account
+) {
+
+    if (!account) {
+        return;
+    }
+
+
+    currentAccount =
+        account;
+
+
+    accountUsername =
+        account.username;
+
+    accountPassword =
+        account.password;
+
+    accountPin =
+        account.pin;
+
+
+    expenses =
+        account.expenses;
+
+
+    darkModeEnabled =
+        !!account.darkMode;
+
+
+    applyDarkMode();
+
+
+    displayUsername.textContent =
+        accountUsername;
+
+    displayPin.textContent =
+        accountPin;
+
+    displayPassword.textContent =
+        "••••••••";
+
+    displayPassword.dataset.visible =
+        "false";
+
+    accountPasswordToggle.textContent =
+        "Show Pass";
+
+
+    const accountsPage =
+        document.getElementById(
+            "accountsPage"
+        );
+
+
+    if (accountsPage) {
+
+        accountsPage.remove();
+
+    }
+
+
+    loginScreen.style.display =
+        "none";
+
+    signInPage.style.display =
+        "none";
+
+    signUpPage.style.display =
+        "none";
+
+
+    showHome();
+
+
+    accountIcon.style.display =
+        "flex";
+
+}
 
 /* ============================= */
 /* HOW IT WORKS */
@@ -1810,6 +2313,99 @@ const accountPasswordToggle =
     document.getElementById(
         "accountPasswordToggle"
     );
+
+
+/* ============================= */
+/* ACCOUNTS OPTION ON SIGN IN */
+/* ============================= */
+
+let accountsLoginOption =
+    document.getElementById("accountsLoginOption");
+
+if (!accountsLoginOption) {
+
+    accountsLoginOption =
+        document.createElement("div");
+
+    accountsLoginOption.id =
+        "accountsLoginOption";
+
+    accountsLoginOption.className =
+        "accounts-login-option";
+
+    accountsLoginOption.textContent =
+        "Accounts";
+
+    const signInHeading =
+        signInPage.querySelector("h1");
+
+    if (signInHeading) {
+
+        signInHeading.insertAdjacentElement(
+            "afterend",
+            accountsLoginOption
+        );
+
+    } else {
+
+        signInPage
+            .querySelector(".sign-in-box")
+            .insertBefore(
+                accountsLoginOption,
+                signInPage
+                    .querySelector(".sign-in-box")
+                    .children[1]
+            );
+
+    }
+
+}
+
+accountsLoginOption.onclick =
+    function() {
+
+        selectedAccountIndex = 0;
+
+        loginScreen.style.display =
+            "none";
+
+        signInPage.style.display =
+            "none";
+
+        signUpPage.style.display =
+            "none";
+
+        showAccountsPage();
+
+    };
+
+/* ============================= */
+/* ACCOUNTS OPTION CLICK */
+/* ============================= */
+
+accountsLoginOption.addEventListener(
+    "click",
+    function() {
+
+        selectedAccountIndex = 0;
+
+
+        loginScreen.style.display =
+            "none";
+
+
+        signInPage.style.display =
+            "none";
+
+
+        signUpPage.style.display =
+            "none";
+
+
+        showAccountsPage();
+
+    }
+);
 
 
 /* ============================= */
