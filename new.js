@@ -14,11 +14,9 @@ homeBtn.onclick = function() {
 /* ============================= */
 
 let accounts = [];
-
+let allAccounts = [];
 let currentAccount = null;
-
 let darkModeEnabled = false;
-
 let expenses = [];
 
 /* ============================= */
@@ -338,13 +336,73 @@ function renderAccountsCarousel() {
 
                 <div class="account-carousel-username">
 
-                    ${escapeHTML(
-                        account.username
-                    )}
+                    ${escapeHTML(account.username)}
 
                 </div>
 
+
+                <button
+                    class="remove-account-shortcut"
+                    type="button"
+                >
+                    Remove
+                </button>
+
             `;
+
+            const removeButton =
+    card.querySelector(
+        ".remove-account-shortcut"
+    );
+
+
+removeButton.addEventListener(
+    "click",
+    function(event) {
+
+        event.stopPropagation();
+
+
+        const accountToRemove =
+            accounts[index];
+
+
+        if (!accountToRemove) {
+            return;
+        }
+
+
+        /* Remove ONLY from the
+           Accounts shortcut list */
+
+        accounts.splice(
+            index,
+            1
+        );
+
+
+        /* Keep the actual account
+           inside allAccounts */
+
+
+        if (
+            selectedAccountIndex >=
+            accounts.length
+        ) {
+
+            selectedAccountIndex =
+                Math.max(
+                    0,
+                    accounts.length - 1
+                );
+
+        }
+
+
+        renderAccountsCarousel();
+
+    }
+);
 
 
             card.addEventListener(
@@ -2563,7 +2621,7 @@ enterAccountBtn.addEventListener(
         /* ============================= */
 
         const foundAccount =
-            accounts.find(
+            allAccounts.find(
                 function(account) {
 
                     return (
@@ -2653,7 +2711,16 @@ enterAccountBtn.addEventListener(
         accountIcon.style.display =
             "flex";
 
-    }
+
+/* Show save-account popup */
+
+        setTimeout(function() {
+
+            showSaveAccountPopup(foundAccount);
+
+        }, 200);
+
+}
 );
 
 /* ============================= */
@@ -2812,7 +2879,7 @@ saveAccountBtn.addEventListener(
         /* ============================= */
 
         const usernameExists =
-            accounts.some(
+            allAccounts.some(
                 function(account) {
 
                     return (
@@ -2853,7 +2920,15 @@ saveAccountBtn.addEventListener(
         };
 
 
-        /* Store account temporarily */
+/* Store the account itself */
+
+        allAccounts.push(
+            newAccount
+        );
+
+
+/* New sign-up accounts are
+   automatically saved in Accounts */
 
         accounts.push(
             newAccount
@@ -2992,3 +3067,145 @@ accountPasswordToggle.addEventListener(
 );
 
 
+/* ============================= */
+/* SAVE ACCOUNT POPUP */
+/* ============================= */
+
+let saveAccountPopup = null;
+
+
+function showSaveAccountPopup(account) {
+
+    if (!account) {
+        return;
+    }
+
+
+    /* If account is already saved,
+       don't show anything */
+
+    const alreadySaved =
+        accounts.includes(account);
+
+
+    if (alreadySaved) {
+        return;
+    }
+
+
+    /* Remove an old popup first */
+
+    if (saveAccountPopup) {
+
+        saveAccountPopup.remove();
+
+        saveAccountPopup = null;
+
+    }
+
+
+    saveAccountPopup =
+        document.createElement("div");
+
+
+    saveAccountPopup.className =
+        "save-account-popup";
+
+
+    saveAccountPopup.innerHTML = `
+
+        <div class="save-account-popup-text">
+
+            Do you want to save this account?
+
+        </div>
+
+
+        <div class="save-account-popup-buttons">
+
+            <button
+                class="save-account-popup-save"
+                id="saveAccountPopupSave"
+            >
+                Save
+            </button>
+
+
+            <button
+                class="save-account-popup-not-now"
+                id="saveAccountPopupNotNow"
+            >
+                Not Now
+            </button>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        saveAccountPopup
+    );
+
+
+    /* SAVE */
+
+    document
+        .getElementById(
+            "saveAccountPopupSave"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                if (
+                    !accounts.includes(account)
+                ) {
+
+                    accounts.push(account);
+
+                }
+
+
+                saveAccountPopup.remove();
+
+                saveAccountPopup = null;
+
+
+                /* Refresh Accounts page
+                   if it is currently open */
+
+                const accountsPage =
+                    document.getElementById(
+                        "accountsPage"
+                    );
+
+
+                if (accountsPage) {
+
+                    renderAccountsCarousel();
+
+                }
+
+            }
+        );
+
+
+    /* NOT NOW */
+
+    document
+        .getElementById(
+            "saveAccountPopupNotNow"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                saveAccountPopup.remove();
+
+                saveAccountPopup = null;
+
+            }
+        );
+
+}

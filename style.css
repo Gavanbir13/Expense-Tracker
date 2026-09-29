@@ -3631,3 +3631,271 @@ body.dark-mode
     }
 
 }
+
+
+/* ============================= */
+/* REMOVE ACCOUNT SHORTCUT */
+/* ============================= */
+
+.remove-account-shortcut {
+
+    margin-top: 9px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #dc3545;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    padding: 4px 8px;
+
+    border-radius: 6px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.remove-account-shortcut:hover {
+
+    background-color: #ffe5e8;
+
+    color: #b02a37;
+
+}
+
+
+/* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+body.dark-mode
+.remove-account-shortcut {
+
+    color: #ff6b78;
+
+}
+
+
+body.dark-mode
+.remove-account-shortcut:hover {
+
+    background-color: #352126;
+
+    color: #ff8b95;
+
+}
+
+/* ============================= */
+/* SAVE ACCOUNT POPUP */
+/* ============================= */
+
+.save-account-popup {
+
+    position: fixed;
+
+    top: 20px;
+
+    right: 20px;
+
+    width: 320px;
+
+    box-sizing: border-box;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e1e5e9;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    box-shadow:
+        0 8px 28px
+        rgba(0, 0, 0, 0.18);
+
+    z-index: 10000;
+
+    animation:
+        saveAccountPopupIn
+        0.25s ease;
+
+}
+
+
+.save-account-popup-text {
+
+    color: #222;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    margin-bottom: 15px;
+
+}
+
+
+.save-account-popup-buttons {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 9px;
+
+}
+
+
+.save-account-popup-save,
+.save-account-popup-not-now {
+
+    border: none;
+
+    padding: 9px 16px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+
+}
+
+
+.save-account-popup-save {
+
+    background-color: #007bff;
+
+    color: white;
+
+}
+
+
+.save-account-popup-not-now {
+
+    background-color: #e9ecef;
+
+    color: #495057;
+
+}
+
+
+.save-account-popup-save:hover,
+.save-account-popup-not-now:hover {
+
+    transform: translateY(-1px);
+
+    opacity: 0.9;
+
+}
+
+
+/* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+body.dark-mode
+.save-account-popup {
+
+    background-color: #1f2329;
+
+    border-color: #343a42;
+
+    box-shadow:
+        0 8px 28px
+        rgba(0, 0, 0, 0.45);
+
+}
+
+
+body.dark-mode
+.save-account-popup-text {
+
+    color: #f1f3f5;
+
+}
+
+
+body.dark-mode
+.save-account-popup-save {
+
+    background-color: #1877f2;
+
+    color: white;
+
+}
+
+
+body.dark-mode
+.save-account-popup-not-now {
+
+    background-color: #343a42;
+
+    color: #d5d9de;
+
+}
+
+
+/* ============================= */
+/* POPUP ANIMATION */
+/* ============================= */
+
+@keyframes saveAccountPopupIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-10px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media (max-width: 600px) {
+
+    .save-account-popup {
+
+        top: 15px;
+
+        right: 15px;
+
+        left: 15px;
+
+        width: auto;
+
+    }
+
+}
