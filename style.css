@@ -3899,3 +3899,311 @@ body.dark-mode
     }
 
 }
+
+
+/* ================================= */
+/* EXPENSE THREE-DOT OPTIONS */
+/* ================================= */
+
+.expense-history-card.compact {
+    position: relative;
+}
+
+
+.expense-options-button {
+    border: none;
+    background: transparent;
+    color: inherit;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 6px 8px;
+    margin-left: 8px;
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+
+.expense-options-button:hover {
+    background: rgba(128, 128, 128, 0.15);
+}
+
+
+/* ================================= */
+/* EXPENSE OPTIONS MENU */
+/* ================================= */
+
+.expense-options-menu {
+    display: none;
+    position: absolute;
+    right: 15px;
+    top: calc(100% - 5px);
+    min-width: 120px;
+    background: white;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 20;
+}
+
+
+.expense-options-menu.show {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+
+.expense-options-menu button {
+    border: none;
+    background: transparent;
+    padding: 9px 12px;
+    text-align: left;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+.expense-option-edit {
+    color: #222222;
+}
+
+
+.expense-option-delete {
+    color: #d33;
+}
+
+
+.expense-options-menu button:hover {
+    background: #f0f0f0;
+}
+
+
+/* ================================= */
+/* POPUP OVERLAY */
+/* ================================= */
+
+.expense-action-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+
+/* ================================= */
+/* DELETE POPUP */
+/* ================================= */
+
+.delete-expense-popup {
+    width: min(460px, 100%);
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+}
+
+
+.delete-expense-message {
+    font-size: 18px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+
+.delete-expense-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+
+.delete-expense-buttons button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+.delete-expense-yes {
+    background: #1877f2;
+    color: white;
+}
+
+
+.delete-expense-no {
+    background: #d3d3d3;
+    color: #222222;
+}
+
+
+/* ================================= */
+/* EDIT POPUP */
+/* ================================= */
+
+.edit-expense-popup {
+    width: min(650px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+}
+
+
+.edit-expense-popup h2 {
+    margin: 0 0 24px;
+}
+
+
+.edit-expense-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+
+.edit-expense-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+
+.edit-expense-field label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.edit-expense-field input,
+.edit-expense-field select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    color: #222222;
+}
+
+
+.edit-expense-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+
+.edit-expense-buttons button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+.edit-expense-save {
+    background: #1877f2;
+    color: white;
+}
+
+
+.edit-expense-cancel {
+    background: #d3d3d3;
+    color: #222222;
+}
+
+
+/* ================================= */
+/* DELETE / EDIT SUCCESS MESSAGE */
+/* ================================= */
+
+.expense-deleted-message,
+.expense-edited-message {
+    margin-top: 20px;
+}
+
+
+/* ================================= */
+/* DARK MODE */
+/* ================================= */
+
+body.dark-mode .expense-options-menu {
+    background: #222222;
+    border-color: #444444;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+}
+
+
+body.dark-mode .expense-options-menu button {
+    color: #eeeeee;
+}
+
+
+body.dark-mode .expense-options-menu button:hover {
+    background: #333333;
+}
+
+
+body.dark-mode .delete-expense-popup,
+body.dark-mode .edit-expense-popup {
+    background: #222222;
+    color: #eeeeee;
+}
+
+
+body.dark-mode .edit-expense-field input,
+body.dark-mode .edit-expense-field select {
+    background: #2d2d2d;
+    color: #eeeeee;
+    border-color: #555555;
+}
+
+
+body.dark-mode .delete-expense-no,
+body.dark-mode .edit-expense-cancel {
+    background: #555555;
+    color: #eeeeee;
+}
+
+
+@media (max-width: 600px) {
+
+    .edit-expense-fields {
+        grid-template-columns: 1fr;
+    }
+
+
+    .edit-expense-popup {
+        padding: 20px;
+    }
+
+
+    .delete-expense-popup {
+        padding: 22px;
+    }
+
+
+    .compact-history-row {
+        gap: 6px;
+    }
+
+
+    .expense-options-button {
+        margin-left: 2px;
+    }
+
+}

@@ -1559,21 +1559,54 @@ function showExpenseHistory(viewMode = historyViewMode) {
 
                     cardsHTML += `
 
-                        <div class="expense-history-card">
+                        <div
+    class="expense-history-card"
+    data-expense-index="${index}"
+>
 
-                            <div class="history-card-top">
+    <div class="history-card-top">
 
-                                <h2>
-                                    ${escapeHTML(
-                                        expense.name
-                                    )}
-                                </h2>
+        <h2>
+            ${escapeHTML(
+                expense.name
+            )}
+        </h2>
 
-                                <div class="history-rate">
-                                    $${expense.rate}
-                                </div>
+        <div class="history-rate">
+            $${expense.rate}
+        </div>
 
-                            </div>
+        <button
+            class="expense-options-button"
+            type="button"
+            data-expense-index="${index}"
+            aria-label="Expense options"
+        >
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+
+    </div>
+
+    <div
+        class="expense-options-menu"
+        data-menu-index="${index}"
+    >
+
+        <button
+            class="expense-option-edit"
+            type="button"
+        >
+            Edit
+        </button>
+
+        <button
+            class="expense-option-delete"
+            type="button"
+        >
+            Delete
+        </button>
+
+    </div>
 
 
                             <div class="history-details">
@@ -1646,53 +1679,83 @@ function showExpenseHistory(viewMode = historyViewMode) {
         /* ============================= */
 
         else {
+    expenses.forEach(
+        function(expense, index) {
 
-            expenses.forEach(
-                function(expense, index) {
+            cardsHTML += `
 
-                    cardsHTML += `
+                <div
+                    class="expense-history-card compact"
+                    data-expense-index="${index}"
+                >
 
-                        <div
-                            class="expense-history-card compact"
-                            data-expense-index="${index}"
-                        >
+                    <div class="compact-history-row">
 
-                            <div class="compact-history-row">
+                        <div class="compact-history-name">
 
-                                <div class="compact-history-name">
-
-                                    ${escapeHTML(
-                                        expense.name
-                                    )}
-
-                                </div>
-
-
-                                <div class="compact-history-date">
-
-                                    ${formatDate(
-                                        expense.date
-                                    )}
-
-                                </div>
-
-
-                                <div class="compact-history-rate">
-
-                                    $${expense.rate}
-
-                                </div>
-
-                            </div>
+                            ${escapeHTML(
+                                expense.name
+                            )}
 
                         </div>
 
-                    `;
 
-                }
-            );
+                        <div class="compact-history-date">
+
+                            ${formatDate(
+                                expense.date
+                            )}
+
+                        </div>
+
+
+                        <div class="compact-history-rate">
+
+                            $${expense.rate}
+
+                        </div>
+
+
+                        <button
+                            class="expense-options-button"
+                            type="button"
+                            data-expense-index="${index}"
+                            aria-label="Expense options"
+                        >
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="expense-options-menu"
+                        data-menu-index="${index}"
+                    >
+
+                        <button
+                            class="expense-option-edit"
+                            type="button"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="expense-option-delete"
+                            type="button"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
 
         }
+    );
+
+}
 
 
         content.innerHTML = `
@@ -1818,35 +1881,151 @@ function showExpenseHistory(viewMode = historyViewMode) {
         /* COMPACT EXPENSE CLICK */
         /* ============================= */
 
-        if (viewMode === "compact") {
+        if (
+    viewMode === "compact" ||
+    viewMode === "detailed"
+) {
 
-            document
-                .querySelectorAll(
-                    ".expense-history-card.compact"
-                )
-                .forEach(
-                    function(card) {
+    document
+        .querySelectorAll(
+            ".expense-history-card"
+        )
+        .forEach(
+            function(card) {
 
-                        card.addEventListener(
-                            "click",
-                            function() {
+                /* Open full expense details */
+                card.addEventListener(
+                    "click",
+                    function(event) {
 
-                                const index =
-                                    Number(
-                                        card.dataset.expenseIndex
-                                    );
+                        if (
+                            event.target.closest(
+                                ".expense-options-button"
+                            ) ||
+                            event.target.closest(
+                                ".expense-options-menu"
+                            )
+                        ) {
+                            return;
+                        }
 
-                                showExpenseDetails(index);
+                        const index =
+                            Number(
+                                card.dataset.expenseIndex
+                            );
 
-                            }
+                        showExpenseDetails(index);
+
+                    }
+                );
+
+
+                /* Three-dot button */
+                const optionsButton =
+                    card.querySelector(
+                        ".expense-options-button"
+                    );
+
+
+                const optionsMenu =
+                    card.querySelector(
+                        ".expense-options-menu"
+                    );
+
+
+                optionsButton.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.stopPropagation();
+
+                        document
+                            .querySelectorAll(
+                                ".expense-options-menu"
+                            )
+                            .forEach(
+                                function(menu) {
+
+                                    if (
+                                        menu !==
+                                        optionsMenu
+                                    ) {
+                                        menu.classList.remove(
+                                            "show"
+                                        );
+                                    }
+
+                                }
+                            );
+
+
+                        optionsMenu.classList.toggle(
+                            "show"
                         );
 
                     }
                 );
 
-        }
 
-    }
+                /* Edit */
+                const editButton =
+                    card.querySelector(
+                        ".expense-option-edit"
+                    );
+
+
+                editButton.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.stopPropagation();
+
+                        const index =
+                            Number(
+                                card.dataset.expenseIndex
+                            );
+
+                        optionsMenu.classList.remove(
+                            "show"
+                        );
+
+                        showEditExpensePopup(index);
+
+                    }
+                );
+
+
+                /* Delete */
+                const deleteButton =
+                    card.querySelector(
+                        ".expense-option-delete"
+                    );
+
+
+                deleteButton.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.stopPropagation();
+
+                        const index =
+                            Number(
+                                card.dataset.expenseIndex
+                            );
+
+                        optionsMenu.classList.remove(
+                            "show"
+                        );
+
+                        showDeleteExpensePopup(index);
+
+                    }
+                );
+
+            }
+        );
+
+}
 
 
     /* ============================= */
@@ -1864,6 +2043,7 @@ function showExpenseHistory(viewMode = historyViewMode) {
             }
         );
 
+    }
 }
 
 
@@ -1984,9 +2164,7 @@ function showExpenseDetails(index) {
     `;
 
 
-    /* ============================= */
-    /* BACK TO COMPACT VIEW */
-    /* ============================= */
+    /* BACK BUTTON */
 
     document
         .getElementById(
@@ -1996,12 +2174,503 @@ function showExpenseDetails(index) {
             "click",
             function() {
 
-                showExpenseHistory("compact");
+                showExpenseHistory(
+                    historyViewMode
+                );
 
             }
         );
 
 }
+
+
+/* ============================= */
+/* DELETE EXPENSE POPUP */
+/* ============================= */
+
+function showDeleteExpensePopup(index) {
+
+    const expense = expenses[index];
+
+    if (!expense) {
+        return;
+    }
+
+
+    const existingPopup =
+        document.getElementById(
+            "deleteExpenseOverlay"
+        );
+
+
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "deleteExpenseOverlay";
+
+    overlay.className =
+        "expense-action-overlay";
+
+
+    overlay.innerHTML = `
+
+        <div class="delete-expense-popup">
+
+            <div class="delete-expense-message">
+
+                Are you sure you want to delete
+                this expense?
+
+            </div>
+
+
+            <div class="delete-expense-buttons">
+
+                <button
+                    type="button"
+                    class="delete-expense-yes"
+                    id="deleteExpenseYes"
+                >
+                    Yes
+                </button>
+
+
+                <button
+                    type="button"
+                    class="delete-expense-no"
+                    id="deleteExpenseNo"
+                >
+                    No
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    /* NO */
+
+    document
+        .getElementById(
+            "deleteExpenseNo"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                overlay.remove();
+
+            }
+        );
+
+
+    /* YES */
+
+    document
+        .getElementById(
+            "deleteExpenseYes"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                expenses.splice(
+                    index,
+                    1
+                );
+
+
+                if (currentAccount) {
+
+                    currentAccount.expenses =
+                        expenses;
+
+                }
+
+
+                overlay.remove();
+
+
+                showExpenseHistory(
+                    historyViewMode
+                );
+
+
+                const message =
+                    document.createElement("div");
+
+                message.className =
+                    "success-message expense-deleted-message";
+
+                message.textContent =
+                    "Expense deleted";
+
+
+                content.appendChild(
+                    message
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        message.remove();
+
+                    },
+                    3000
+                );
+
+            }
+        );
+
+}
+
+
+/* ============================= */
+/* EDIT EXPENSE POPUP */
+/* ============================= */
+
+function showEditExpensePopup(index) {
+
+    const expense = expenses[index];
+
+    if (!expense) {
+        return;
+    }
+
+
+    const existingPopup =
+        document.getElementById(
+            "editExpenseOverlay"
+        );
+
+
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "editExpenseOverlay";
+
+    overlay.className =
+        "expense-action-overlay";
+
+
+    overlay.innerHTML = `
+
+        <div class="edit-expense-popup">
+
+            <h2>Edit Expense</h2>
+
+
+            <div class="edit-expense-fields">
+
+                <div class="edit-expense-field">
+
+                    <label for="editExpenseName">
+                        Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editExpenseName"
+                        value="${escapeHTML(expense.name)}"
+                    >
+
+                </div>
+
+
+                <div class="edit-expense-field">
+
+                    <label for="editExpenseRate">
+                        Rate
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editExpenseRate"
+                        min="0"
+                        step="0.01"
+                        value="${escapeHTML(expense.rate)}"
+                    >
+
+                </div>
+
+
+                <div class="edit-expense-field">
+
+                    <label for="editExpenseDate">
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="editExpenseDate"
+                        value="${escapeHTML(expense.date)}"
+                    >
+
+                </div>
+
+
+                <div class="edit-expense-field">
+
+                    <label for="editExpenseTime">
+                        Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="editExpenseTime"
+                        value="${escapeHTML(expense.time)}"
+                    >
+
+                </div>
+
+
+                <div class="edit-expense-field">
+
+                    <label for="editExpenseFamilyMember">
+                        Family Member
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editExpenseFamilyMember"
+                        value="${escapeHTML(expense.familyMember)}"
+                    >
+
+                </div>
+
+
+                <div class="edit-expense-field">
+
+                    <label for="editExpenseCategory">
+                        Category
+                    </label>
+
+                    <select
+                        id="editExpenseCategory"
+                    >
+
+                        <option value="Electrical">
+                            Electrical
+                        </option>
+
+                        <option value="Household">
+                            Household
+                        </option>
+
+                        <option value="Furniture">
+                            Furniture
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="edit-expense-buttons">
+
+                <button
+                    type="button"
+                    class="edit-expense-cancel"
+                    id="editExpenseCancel"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    class="edit-expense-save"
+                    id="editExpenseSave"
+                >
+                    Save
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    /* Set current category */
+
+    document.getElementById(
+        "editExpenseCategory"
+    ).value =
+        expense.category;
+
+
+    /* CANCEL */
+
+    document
+        .getElementById(
+            "editExpenseCancel"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                overlay.remove();
+
+            }
+        );
+
+
+    /* SAVE */
+
+    document
+        .getElementById(
+            "editExpenseSave"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                const newName =
+                    document.getElementById(
+                        "editExpenseName"
+                    ).value.trim();
+
+
+                const newRate =
+                    document.getElementById(
+                        "editExpenseRate"
+                    ).value;
+
+
+                const newDate =
+                    document.getElementById(
+                        "editExpenseDate"
+                    ).value;
+
+
+                const newTime =
+                    document.getElementById(
+                        "editExpenseTime"
+                    ).value;
+
+
+                const newFamilyMember =
+                    document.getElementById(
+                        "editExpenseFamilyMember"
+                    ).value.trim();
+
+
+                const newCategory =
+                    document.getElementById(
+                        "editExpenseCategory"
+                    ).value;
+
+
+                if (
+                    newName === "" ||
+                    newRate === "" ||
+                    newDate === "" ||
+                    newTime === "" ||
+                    newFamilyMember === "" ||
+                    newCategory === ""
+                ) {
+
+                    return;
+
+                }
+
+
+                expense.name =
+                    newName;
+
+                expense.rate =
+                    newRate;
+
+                expense.date =
+                    newDate;
+
+                expense.time =
+                    newTime;
+
+                expense.familyMember =
+                    newFamilyMember;
+
+                expense.category =
+                    newCategory;
+
+
+                if (currentAccount) {
+
+                    currentAccount.expenses =
+                        expenses;
+
+                }
+
+
+                overlay.remove();
+
+
+                showExpenseHistory(
+                    historyViewMode
+                );
+
+
+                const message =
+                    document.createElement("div");
+
+                message.className =
+                    "success-message expense-edited-message";
+
+                message.textContent =
+                    "Expense updated";
+
+
+                content.appendChild(
+                    message
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        message.remove();
+
+                    },
+                    3000
+                );
+
+            }
+        );
+
+}
+
 
 /* ============================= */
 /* HELPER FUNCTIONS */
@@ -2131,9 +2800,9 @@ function setDarkMode(enabled) {
 applyDarkMode();
 
 
- /* ============================= */
- /* DELETE ACCOUNT */
- /* ============================= */
+/* ============================= */
+/* DELETE ACCOUNT */
+/* ============================= */
 
 function deleteCurrentAccount() {
 
@@ -2144,10 +2813,24 @@ function deleteCurrentAccount() {
     }
 
 
-    /* Remove the current account */
+    /* Remove the account from the
+       Accounts shortcut list */
 
     accounts =
         accounts.filter(
+            function(account) {
+
+                return account !== currentAccount;
+
+            }
+        );
+
+
+    /* Permanently remove the account
+       from the temporary account database */
+
+    allAccounts =
+        allAccounts.filter(
             function(account) {
 
                 return account !== currentAccount;
@@ -2201,7 +2884,6 @@ function deleteCurrentAccount() {
         "flex";
 
 }
-
 
 /* ============================= */
 /* LOG OUT */
