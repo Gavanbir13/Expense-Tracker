@@ -1543,6 +1543,20 @@ function showExpenseHistory(viewMode = historyViewMode) {
 
         `;
 
+
+        document
+    .getElementById("historyBackButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            showHome();
+
+        }
+    );
+
+return;
+
     } else {
 
         let cardsHTML = "";
@@ -1877,23 +1891,22 @@ function showExpenseHistory(viewMode = historyViewMode) {
             );
 
 
-        /* ============================= */
-        /* COMPACT EXPENSE CLICK */
-        /* ============================= */
+/* ============================= */
+/* EXPENSE CARD / OPTIONS CLICK */
+/* ============================= */
 
-        if (
-    viewMode === "compact" ||
-    viewMode === "detailed"
-) {
+
+/* COMPACT CARD CLICK */
+
+if (viewMode === "compact") {
 
     document
         .querySelectorAll(
-            ".expense-history-card"
+            ".expense-history-card.compact"
         )
         .forEach(
             function(card) {
 
-                /* Open full expense details */
                 card.addEventListener(
                     "click",
                     function(event) {
@@ -1919,60 +1932,83 @@ function showExpenseHistory(viewMode = historyViewMode) {
                     }
                 );
 
+            }
+        );
 
-                /* Three-dot button */
-                const optionsButton =
-                    card.querySelector(
-                        ".expense-options-button"
-                    );
+}
 
 
-                const optionsMenu =
-                    card.querySelector(
-                        ".expense-options-menu"
-                    );
+/* THREE-DOT OPTIONS */
+/* Works in BOTH Compact and Detailed View */
+
+document
+    .querySelectorAll(
+        ".expense-options-button"
+    )
+    .forEach(
+        function(optionsButton) {
+
+            const card =
+                optionsButton.closest(
+                    ".expense-history-card"
+                );
+
+            if (!card) return;
 
 
-                optionsButton.addEventListener(
-                    "click",
-                    function(event) {
+            const optionsMenu =
+                card.querySelector(
+                    ".expense-options-menu"
+                );
 
-                        event.stopPropagation();
+            if (!optionsMenu) return;
 
-                        document
-                            .querySelectorAll(
-                                ".expense-options-menu"
-                            )
-                            .forEach(
-                                function(menu) {
 
-                                    if (
-                                        menu !==
-                                        optionsMenu
-                                    ) {
-                                        menu.classList.remove(
-                                            "show"
-                                        );
-                                    }
+            /* Three dots */
 
+            optionsButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    document
+                        .querySelectorAll(
+                            ".expense-options-menu"
+                        )
+                        .forEach(
+                            function(menu) {
+
+                                if (
+                                    menu !==
+                                    optionsMenu
+                                ) {
+                                    menu.classList.remove(
+                                        "show"
+                                    );
                                 }
-                            );
 
-
-                        optionsMenu.classList.toggle(
-                            "show"
+                            }
                         );
 
-                    }
+
+                    optionsMenu.classList.toggle(
+                        "show"
+                    );
+
+                }
+            );
+
+
+            /* Edit */
+
+            const editButton =
+                card.querySelector(
+                    ".expense-option-edit"
                 );
 
 
-                /* Edit */
-                const editButton =
-                    card.querySelector(
-                        ".expense-option-edit"
-                    );
-
+            if (editButton) {
 
                 editButton.addEventListener(
                     "click",
@@ -1994,13 +2030,18 @@ function showExpenseHistory(viewMode = historyViewMode) {
                     }
                 );
 
+            }
 
-                /* Delete */
-                const deleteButton =
-                    card.querySelector(
-                        ".expense-option-delete"
-                    );
 
+            /* Delete */
+
+            const deleteButton =
+                card.querySelector(
+                    ".expense-option-delete"
+                );
+
+
+            if (deleteButton) {
 
                 deleteButton.addEventListener(
                     "click",
@@ -2023,10 +2064,9 @@ function showExpenseHistory(viewMode = historyViewMode) {
                 );
 
             }
-        );
 
-}
-
+        }
+    );
 
     /* ============================= */
     /* HISTORY BACK BUTTON */
