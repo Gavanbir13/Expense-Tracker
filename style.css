@@ -4207,3 +4207,442 @@ body.dark-mode .edit-expense-cancel {
     }
 
 }
+
+
+/* ============================= */
+/* GRAPHS PAGE */
+/* ============================= */
+
+.graphs-page {
+
+    min-height: calc(100vh - 150px);
+
+    padding: 20px 0 60px;
+
+    text-align: center;
+
+}
+
+
+/* ============================= */
+/* GRAPH HEADING */
+/* ============================= */
+
+.graphs-heading h1 {
+
+    margin-top: 10px;
+
+    margin-bottom: 8px;
+
+    font-size: 32px;
+
+}
+
+
+.graphs-heading p {
+
+    color: #777;
+
+    margin-bottom: 30px;
+
+    font-size: 16px;
+
+}
+
+
+/* ============================= */
+/* EMPTY GRAPH */
+/* ============================= */
+
+.graphs-empty-state {
+
+    width: min(600px, 90%);
+
+    margin: 80px auto 0;
+
+    padding: 45px 30px;
+
+    background-color: white;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.1);
+
+    border: 1px solid #eeeeee;
+
+}
+
+
+.graphs-empty-state h2 {
+
+    font-size: 24px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.graphs-empty-state p {
+
+    color: #777;
+
+    font-size: 15px;
+
+}
+
+
+/* ============================= */
+/* CATEGORY GRAPH CARD */
+/* ============================= */
+
+.category-graph-card {
+
+    width: min(700px, 92%);
+
+    margin: 0 auto;
+
+    padding: 30px;
+
+    background-color: white;
+
+    border-radius: 18px;
+
+    border: 1px solid #eeeeee;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.1);
+
+}
+
+
+/* ============================= */
+/* TOTAL */
+/* ============================= */
+
+.category-graph-total {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-direction: column;
+
+    margin-bottom: 25px;
+
+}
+
+
+.category-graph-total span {
+
+    color: #888;
+
+    font-size: 13px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.category-graph-total strong {
+
+    margin-top: 5px;
+
+    font-size: 25px;
+
+    color: #1877f2;
+
+}
+
+
+/* ============================= */
+/* PIE GRAPH */
+/* ============================= */
+
+.category-graph-circle-area {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: 10px auto 30px;
+
+}
+
+
+.category-graph-svg {
+
+    width: 300px;
+
+    height: 300px;
+
+    display: block;
+
+}
+
+
+.graph-slice {
+
+    stroke: white;
+
+    stroke-width: 1.5;
+
+}
+
+
+/* ============================= */
+/* GRAPH COLORS */
+/* ============================= */
+
+.graph-category-electrical {
+
+    fill: #ff4d4d;
+
+    background-color: #ff4d4d;
+
+}
+
+
+.graph-category-household {
+
+    fill: #4f81bd;
+
+    background-color: #4f81bd;
+
+}
+
+
+.graph-category-furniture {
+
+    fill: #9bbb59;
+
+    background-color: #9bbb59;
+
+}
+
+
+.graph-category-other {
+
+    fill: #f39c3d;
+
+    background-color: #f39c3d;
+
+}
+
+
+/* ============================= */
+/* LEGEND */
+/* ============================= */
+
+.category-graph-legend {
+
+    width: min(500px, 100%);
+
+    margin: 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    text-align: left;
+
+}
+
+
+.graph-legend-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 12px;
+
+    border-radius: 10px;
+
+    transition: 0.2s ease;
+
+}
+
+
+.graph-legend-item:hover {
+
+    background-color: #f5f5f5;
+
+}
+
+
+.graph-legend-color {
+
+    width: 15px;
+
+    height: 15px;
+
+    min-width: 15px;
+
+    border-radius: 4px;
+
+}
+
+
+.graph-legend-info {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.graph-legend-name {
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+}
+
+
+.graph-legend-amount {
+
+    font-size: 13px;
+
+    color: #888;
+
+}
+
+
+.graph-legend-percentage {
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    color: #333;
+
+}
+
+
+/* ============================= */
+/* GRAPH DESCRIPTION */
+/* ============================= */
+
+.category-graph-description {
+
+    margin-top: 30px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eeeeee;
+
+}
+
+
+.category-graph-description strong {
+
+    display: block;
+
+    font-size: 15px;
+
+    margin-bottom: 7px;
+
+    color: #333;
+
+}
+
+
+.category-graph-description p {
+
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+}
+
+
+/* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+.dark-mode .category-graph-card,
+
+.dark-mode .graphs-empty-state {
+
+    background-color: #1f1f1f;
+
+    border-color: #333;
+
+}
+
+
+.dark-mode .graph-legend-percentage,
+
+.dark-mode .category-graph-description strong {
+
+    color: #eee;
+
+}
+
+
+.dark-mode .graph-legend-item:hover {
+
+    background-color: #2a2a2a;
+
+}
+
+
+.dark-mode .category-graph-description {
+
+    border-top-color: #333;
+
+}
+
+
+/* ============================= */
+/* MOBILE GRAPH */
+/* ============================= */
+
+@media (max-width: 480px) {
+
+    .category-graph-card {
+
+        width: 94%;
+
+        padding: 22px 15px;
+
+    }
+
+
+    .category-graph-svg {
+
+        width: 240px;
+
+        height: 240px;
+
+    }
+
+
+    .graphs-heading h1 {
+
+        font-size: 28px;
+
+    }
+
+}

@@ -29,7 +29,10 @@ function showHome(successMessage = "") {
     
         <div class="home-expense-bars">
 
-            <div class="new-expense-bar" id="newExpenseBar">
+            <div
+                class="new-expense-bar"
+                id="newExpenseBar"
+            >
 
                 <div class="plus-sign">+</div>
 
@@ -38,7 +41,10 @@ function showHome(successMessage = "") {
             </div>
 
 
-            <div class="new-expense-bar" id="expenseHistoryBar">
+            <div
+                class="new-expense-bar"
+                id="expenseHistoryBar"
+            >
 
                 <div class="plus-sign">$</div>
 
@@ -46,7 +52,22 @@ function showHome(successMessage = "") {
 
             </div>
 
+
+            <div
+                class="new-expense-bar"
+                id="graphsBar"
+            >
+
+                <div class="plus-sign">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+
+                <div>Graphs</div>
+
+            </div>
+
         </div>
+
 
         ${
             successMessage
@@ -74,6 +95,16 @@ function showHome(successMessage = "") {
         .addEventListener(
             "click",
             showExpenseHistory
+        );
+
+
+    /* Graphs */
+
+    document
+        .getElementById("graphsBar")
+        .addEventListener(
+            "click",
+            showGraphs
         );
 
 }
@@ -997,7 +1028,7 @@ function showExpenseForm() {
 
 
         /* ============================= */
-        /* STEP 4 - FAMILY MEMBER */
+        /* STEP 4 - PERSON MAKING EXPENSE */
         /* ============================= */
 
         else if (currentStep === 4) {
@@ -1007,7 +1038,7 @@ function showExpenseForm() {
                 <div class="expense-step-content">
 
                     <label for="familyMember">
-                        Family Member
+                        Person making this expense
                     </label>
 
                     <input
@@ -1139,7 +1170,7 @@ function showExpenseForm() {
                             <div class="step-line"></div>
 
                             <div class="step-tab active">
-                                Family Member
+                                Person making this expense
                             </div>
                         `
                         : ""
@@ -1378,7 +1409,7 @@ function showExpenseForm() {
                         if (value === "") {
 
                             showError(
-                                "Please enter the family member."
+                                "Please enter the person who made this expense."
                             );
 
                             return;
@@ -1507,6 +1538,502 @@ function showExpenseForm() {
 }
 
 
+/* ============================= */
+/* GRAPHS */
+/* ============================= */
+
+function showGraphs() {
+
+    const today = new Date();
+
+    const currentYear =
+        today.getFullYear();
+
+    const currentMonth =
+        today.getMonth();
+
+
+    const currentMonthExpenses =
+        expenses.filter(
+            function(expense) {
+
+                if (!expense.date) {
+                    return false;
+                }
+
+                const expenseDate =
+                    new Date(
+                        expense.date +
+                        "T00:00:00"
+                    );
+
+                return (
+                    expenseDate.getFullYear() ===
+                        currentYear &&
+
+                    expenseDate.getMonth() ===
+                        currentMonth
+                );
+
+            }
+        );
+
+
+    const monthName =
+        today.toLocaleDateString(
+            "en-US",
+            {
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    /* ============================= */
+    /* EMPTY GRAPH */
+    /* ============================= */
+
+    if (
+        currentMonthExpenses.length ===
+        0
+    ) {
+
+        content.innerHTML = `
+
+            <div class="graphs-page">
+
+                <button
+                    class="history-back-button"
+                    id="graphsBackButton"
+                >
+                    ← Back
+                </button>
+
+
+                <div class="graphs-heading">
+
+                    <h1>Graphs</h1>
+
+                    <p>
+                        Category graph for
+                        ${monthName}
+                    </p>
+
+                </div>
+
+
+                <div class="graphs-empty-state">
+
+                    <h2>
+                        No graph yet
+                    </h2>
+
+                    <p>
+                        Add an expense for
+                        ${monthName}
+                        to see your category graph.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        document
+            .getElementById(
+                "graphsBackButton"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    showHome();
+
+                }
+            );
+
+        return;
+
+    }
+
+
+    /* ============================= */
+    /* CATEGORY TOTALS */
+    /* ============================= */
+
+    const categoryTotals = {};
+
+
+    currentMonthExpenses.forEach(
+        function(expense) {
+
+            const category =
+                expense.category ||
+                "Other";
+
+
+            const amount =
+                Number(expense.rate);
+
+
+            if (
+                !Number.isFinite(amount) ||
+                amount < 0
+            ) {
+                return;
+            }
+
+
+            if (
+                !categoryTotals[category]
+            ) {
+
+                categoryTotals[category] =
+                    0;
+
+            }
+
+
+            categoryTotals[category] +=
+                amount;
+
+        }
+    );
+
+
+    const categoryEntries =
+        Object.entries(
+            categoryTotals
+        );
+
+
+    const totalAmount =
+        categoryEntries.reduce(
+            function(total, item) {
+
+                return (
+                    total +
+                    item[1]
+                );
+
+            },
+            0
+        );
+
+
+    /* ============================= */
+    /* CREATE PIE GRAPH */
+    /* ============================= */
+
+    const center = 100;
+    const radius = 100;
+
+    let currentAngle = -90;
+
+
+    const categoryClassMap = {
+
+        Electrical:
+            "graph-category-electrical",
+
+        Household:
+            "graph-category-household",
+
+        Furniture:
+            "graph-category-furniture",
+
+        Other:
+            "graph-category-other"
+
+    };
+
+
+    let slicesHTML = "";
+    let legendHTML = "";
+
+
+    categoryEntries.forEach(
+        function(item) {
+
+            const category =
+                item[0];
+
+            const amount =
+                item[1];
+
+
+            const percentage =
+                totalAmount === 0
+                    ? 0
+                    : (
+                        amount /
+                        totalAmount
+                    ) * 100;
+
+
+            const categoryClass =
+                categoryClassMap[
+                    category
+                ] ||
+                "graph-category-other";
+
+
+            /* ============================= */
+            /* PIE SLICE */
+            /* ============================= */
+
+            if (
+                percentage >=
+                99.999999
+            ) {
+
+                slicesHTML += `
+
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="100"
+                        class="graph-slice ${categoryClass}"
+                    ></circle>
+
+                `;
+
+            } else {
+
+                const endAngle =
+                    currentAngle +
+                    (
+                        percentage *
+                        3.6
+                    );
+
+
+                const startRadians =
+                    currentAngle *
+                    Math.PI /
+                    180;
+
+
+                const endRadians =
+                    endAngle *
+                    Math.PI /
+                    180;
+
+
+                const startX =
+                    center +
+                    radius *
+                    Math.cos(
+                        startRadians
+                    );
+
+
+                const startY =
+                    center +
+                    radius *
+                    Math.sin(
+                        startRadians
+                    );
+
+
+                const endX =
+                    center +
+                    radius *
+                    Math.cos(
+                        endRadians
+                    );
+
+
+                const endY =
+                    center +
+                    radius *
+                    Math.sin(
+                        endRadians
+                    );
+
+
+                const largeArcFlag =
+                    percentage > 50
+                        ? 1
+                        : 0;
+
+
+                const pathData = `
+                    M ${center} ${center}
+                    L ${startX} ${startY}
+                    A ${radius} ${radius}
+                    0 ${largeArcFlag} 1
+                    ${endX} ${endY}
+                    Z
+                `;
+
+
+                slicesHTML += `
+
+                    <path
+                        d="${pathData}"
+                        class="graph-slice ${categoryClass}"
+                    ></path>
+
+                `;
+
+
+                currentAngle =
+                    endAngle;
+
+            }
+
+
+            /* ============================= */
+            /* LEGEND */
+            /* ============================= */
+
+            legendHTML += `
+
+                <div class="graph-legend-item">
+
+                    <span
+                        class="
+                            graph-legend-color
+                            ${categoryClass}
+                        "
+                    ></span>
+
+
+                    <div class="graph-legend-info">
+
+                        <span class="graph-legend-name">
+                            ${escapeHTML(category)}
+                        </span>
+
+                        <span class="graph-legend-amount">
+                            $${amount.toFixed(2)}
+                        </span>
+
+                    </div>
+
+
+                    <span class="graph-legend-percentage">
+                        ${percentage.toFixed(1)}%
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    /* ============================= */
+    /* GRAPH PAGE */
+    /* ============================= */
+
+    content.innerHTML = `
+
+        <div class="graphs-page">
+
+
+            <button
+                class="history-back-button"
+                id="graphsBackButton"
+            >
+                ← Back
+            </button>
+
+
+            <div class="graphs-heading">
+
+                <h1>Category Graph</h1>
+
+                <p>
+                    ${monthName}
+                </p>
+
+            </div>
+
+
+            <div class="category-graph-card">
+
+
+                <div class="category-graph-total">
+
+                    <span>
+                        Total Expenses
+                    </span>
+
+                    <strong>
+                        $${totalAmount.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <div class="category-graph-circle-area">
+
+                    <svg
+                        class="category-graph-svg"
+                        viewBox="0 0 200 200"
+                        aria-label="Monthly expense category graph"
+                    >
+
+                        ${slicesHTML}
+
+                    </svg>
+
+                </div>
+
+
+                <div class="category-graph-legend">
+
+                    ${legendHTML}
+
+                </div>
+
+
+                <div class="category-graph-description">
+
+                    <strong>
+                        Category
+                    </strong>
+
+                    <p>
+                        This graph shows how
+                        your ${monthName}
+                        expenses are divided
+                        between each category.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /* ============================= */
+    /* BACK BUTTON */
+    /* ============================= */
+
+    document
+        .getElementById(
+            "graphsBackButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                showHome();
+
+            }
+        );
+
+}
 
 
 /* ============================= */
@@ -1653,7 +2180,7 @@ return;
 
                                 <div>
 
-                                    <span>Family Member</span>
+                                    <span>Person who made this expense</span>
 
                                     <strong>
                                         ${escapeHTML(
@@ -2170,7 +2697,7 @@ function showExpenseDetails(index) {
 
                         <div>
 
-                            <span>Family Member</span>
+                            <span>Person who made this expense</span>
 
                             <strong>
                                 ${escapeHTML(
@@ -2487,7 +3014,7 @@ function showEditExpensePopup(index) {
                 <div class="edit-expense-field">
 
                     <label for="editExpenseFamilyMember">
-                        Family Member
+                        Person who made this expense
                     </label>
 
                     <input
@@ -3790,6 +4317,100 @@ accountPasswordToggle.addEventListener(
 
 
 /* ============================= */
+/* EDIT PROFILE OPTION */
+/* ============================= */
+
+const editProfileButton =
+    document.createElement("button");
+
+editProfileButton.type =
+    "button";
+
+editProfileButton.textContent =
+    "Edit profile";
+
+editProfileButton.id =
+    "editProfileButton";
+
+
+/* Style the option */
+
+editProfileButton.style.background =
+    "none";
+
+editProfileButton.style.border =
+    "none";
+
+editProfileButton.style.padding =
+    "8px 0";
+
+editProfileButton.style.marginTop =
+    "12px";
+
+editProfileButton.style.color =
+    "#1877f2";
+
+editProfileButton.style.fontSize =
+    "15px";
+
+editProfileButton.style.fontWeight =
+    "500";
+
+editProfileButton.style.cursor =
+    "pointer";
+
+editProfileButton.style.textAlign =
+    "left";
+
+editProfileButton.style.width =
+    "100%";
+
+
+/* Put Edit profile inside
+   the existing account box */
+
+if (closeAccountBtn.parentElement) {
+
+    const accountBox =
+        closeAccountBtn.parentElement;
+
+    const accountHeading =
+        accountBox.querySelector("h2");
+
+    if (accountHeading) {
+
+        accountHeading.insertAdjacentElement(
+            "afterend",
+            editProfileButton
+        );
+
+    } else {
+
+        accountBox.insertBefore(
+            editProfileButton,
+            accountBox.firstChild
+        );
+
+    }
+
+}
+
+
+/* ============================= */
+/* EDIT PROFILE CLICK */
+/* ============================= */
+
+editProfileButton.addEventListener(
+    "click",
+    function() {
+
+        showEditProfilePopup();
+
+    }
+);
+
+
+/* ============================= */
 /* SAVE ACCOUNT POPUP */
 /* ============================= */
 
@@ -3926,6 +4547,420 @@ function showSaveAccountPopup(account) {
                 saveAccountPopup.remove();
 
                 saveAccountPopup = null;
+
+            }
+        );
+
+}
+
+
+/* ============================= */
+/* EDIT PROFILE POPUP */
+/* ============================= */
+
+function showEditProfilePopup() {
+
+    if (!currentAccount) {
+        return;
+    }
+
+
+    /* Remove old popup if one exists */
+
+    const existingPopup =
+        document.getElementById(
+            "editProfileOverlay"
+        );
+
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+
+
+    /* Close account information box */
+
+    accountOverlay.style.display =
+        "none";
+
+
+    /* Create overlay */
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "editProfileOverlay";
+
+    overlay.className =
+        "expense-action-overlay";
+
+
+    overlay.innerHTML = `
+
+        <div class="edit-expense-popup">
+
+            <h2>Edit Profile</h2>
+
+
+            <div class="edit-expense-fields">
+
+                <!-- USERNAME -->
+
+                <div class="edit-expense-field">
+
+                    <label
+                        for="editProfileUsername"
+                    >
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editProfileUsername"
+                        value="${escapeHTML(
+                            currentAccount.username
+                        )}"
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="edit-expense-field">
+
+    <label
+        for="editProfilePassword"
+    >
+        Password
+    </label>
+
+    <div
+        style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        "
+    >
+
+        <input
+            type="password"
+            id="editProfilePassword"
+            value="${escapeHTML(
+                currentAccount.password
+            )}"
+            style="flex: 1;"
+        >
+
+        <button
+            type="button"
+            id="editProfilePasswordToggle"
+            style="
+                background: none;
+                border: none;
+                color: #1877f2;
+                cursor: pointer;
+                font-size: 14px;
+                white-space: nowrap;
+            "
+        >
+            Show Pass
+        </button>
+
+    </div>
+
+</div>
+
+
+                <div
+                    id="editProfileMessage"
+                    class="expense-error"
+                ></div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="edit-expense-buttons">
+
+                <button
+                    type="button"
+                    class="edit-expense-cancel"
+                    id="editProfileCancel"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    class="edit-expense-save"
+                    id="editProfileSave"
+                >
+                    Save
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    /* ============================= */
+/* EDIT PROFILE PASSWORD SHOW / HIDE */
+/* ============================= */
+
+const editProfilePassword =
+    document.getElementById(
+        "editProfilePassword"
+    );
+
+const editProfilePasswordToggle =
+    document.getElementById(
+        "editProfilePasswordToggle"
+    );
+
+
+editProfilePasswordToggle.addEventListener(
+    "click",
+    function() {
+
+        if (
+            editProfilePassword.type ===
+            "password"
+        ) {
+
+            editProfilePassword.type =
+                "text";
+
+            editProfilePasswordToggle.textContent =
+                "Hide Pass";
+
+        } else {
+
+            editProfilePassword.type =
+                "password";
+
+            editProfilePasswordToggle.textContent =
+                "Show Pass";
+
+        }
+
+    }
+);
+
+
+    /* ============================= */
+    /* CANCEL */
+    /* ============================= */
+
+    document
+        .getElementById(
+            "editProfileCancel"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                overlay.remove();
+
+            }
+        );
+
+
+    /* ============================= */
+    /* SAVE */
+/* ============================= */
+
+    document
+        .getElementById(
+            "editProfileSave"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                const newUsername =
+                    document
+                        .getElementById(
+                            "editProfileUsername"
+                        )
+                        .value
+                        .trim();
+
+
+                const newPassword =
+                    document
+                        .getElementById(
+                            "editProfilePassword"
+                        )
+                        .value;
+
+
+                const message =
+                    document
+                        .getElementById(
+                            "editProfileMessage"
+                        );
+
+
+                /* ============================= */
+                /* USERNAME EMPTY */
+                /* ============================= */
+
+                if (newUsername === "") {
+
+                    message.textContent =
+                        "Please enter a username.";
+
+                    return;
+
+                }
+
+
+                /* ============================= */
+                /* PASSWORD EMPTY */
+                /* ============================= */
+
+                if (newPassword === "") {
+
+                    message.textContent =
+                        "Please enter a password.";
+
+                    return;
+
+                }
+
+
+                /* ============================= */
+                /* PASSWORD VALIDATION */
+                /* ============================= */
+
+                if (
+                    !isValidPassword(
+                        newPassword
+                    )
+                ) {
+
+                    message.textContent =
+                        "Password needs a letter, a number, and at least one of ! @ # $ & > _";
+
+                    return;
+
+                }
+
+
+                /* ============================= */
+                /* CHECK USERNAME */
+                /* ============================= */
+
+                const usernameExists =
+                    allAccounts.some(
+                        function(account) {
+
+                            return (
+                                account !==
+                                    currentAccount &&
+
+                                account.username
+                                    .toLowerCase() ===
+                                    newUsername
+                                        .toLowerCase()
+                            );
+
+                        }
+                    );
+
+
+                if (usernameExists) {
+
+                    message.textContent =
+                        "That username is already being used.";
+
+                    return;
+
+                }
+
+
+                /* ============================= */
+                /* SAVE NEW INFORMATION */
+                /* ============================= */
+
+                currentAccount.username =
+                    newUsername;
+
+                currentAccount.password =
+                    newPassword;
+
+
+                /* Update temporary account variables */
+
+                accountUsername =
+                    newUsername;
+
+                accountPassword =
+                    newPassword;
+
+
+                /* Update account information display */
+
+                displayUsername.textContent =
+                    newUsername;
+
+                displayPassword.textContent =
+                    "••••••••";
+
+                displayPassword.dataset.visible =
+                    "false";
+
+                accountPasswordToggle.textContent =
+                    "Show Pass";
+
+
+                /* Close popup */
+
+                overlay.remove();
+
+
+                /* Show account box again */
+
+                accountOverlay.style.display =
+                    "flex";
+
+
+                /* Success message */
+
+                const successMessage =
+                    document.createElement(
+                        "div"
+                    );
+
+                successMessage.className =
+                    "success-message";
+
+                successMessage.textContent =
+                    "Profile updated successfully";
+
+                document.body.appendChild(
+                    successMessage
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        successMessage.remove();
+
+                    },
+                    3000
+                );
 
             }
         );
