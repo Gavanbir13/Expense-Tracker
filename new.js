@@ -20,6 +20,43 @@ let darkModeEnabled = false;
 let expenses = [];
 
 /* ============================= */
+/* ACCOUNT PIN SYSTEM */
+/* ============================= */
+
+function getNextAvailablePIN() {
+
+    /* Check PINs from 1 to 100 */
+
+    for (let pin = 1; pin <= 100; pin++) {
+
+        const pinAlreadyUsed =
+            allAccounts.some(
+                function(account) {
+
+                    return Number(account.pin) === pin;
+
+                }
+            );
+
+
+        /* First empty PIN gets assigned */
+
+        if (!pinAlreadyUsed) {
+
+            return pin;
+
+        }
+
+    }
+
+
+    /* All 100 PINs are occupied */
+
+    return null;
+
+}
+
+/* ============================= */
 /* HOME */
 /* ============================= */
 
@@ -3987,12 +4024,26 @@ signUpBtn.addEventListener(
             "flex";
 
 
-        accountPin = String(
-            Math.floor(Math.random() * 5) + 1
-        );
+        const availablePIN =
+    getNextAvailablePIN();
 
-        pinInput.value =
-            accountPin;
+if (availablePIN !== null) {
+
+    accountPin =
+        String(availablePIN);
+
+    pinInput.value =
+        accountPin;
+
+} else {
+
+    accountPin =
+        "";
+
+    pinInput.value =
+        "No PIN available";
+
+}
 
 
         usernameInput.value = "";
@@ -4142,25 +4193,42 @@ saveAccountBtn.addEventListener(
 
         if (usernameExists) {
 
-            signupMessage.textContent =
-                "That username is already being used.";
+    signupMessage.textContent =
+        "That username is already being used.";
 
-            return;
+    return;
 
-        }
+}
 
 
-        /* ============================= */
-        /* CREATE NEW ACCOUNT */
-        /* ============================= */
+/* ============================= */
+/* CHECK PIN AVAILABILITY */
+/* ============================= */
 
+const availablePIN =
+    getNextAvailablePIN();
+
+
+if (availablePIN === null) {
+
+    signupMessage.textContent =
+        "Account limit has been reached. Can't provide more accounts.";
+
+    return;
+
+}
+
+
+/* ============================= */
+/* CREATE NEW ACCOUNT */
+/* ============================= */
         const newAccount = {
 
             username: username,
 
             password: password,
 
-            pin: pinInput.value,
+            pin: String(availablePIN),
 
             expenses: [],
 
