@@ -19,6 +19,196 @@ let currentAccount = null;
 let darkModeEnabled = false;
 let expenses = [];
 
+
+/* ============================= */
+/* CATEGORY SYSTEM */
+/* ============================= */
+
+const defaultCategories = [
+    {
+        name: "Electrical",
+        color: "#4285F4"
+    },
+
+    {
+        name: "Household",
+        color: "#34A853"
+    },
+
+    {
+        name: "Furniture",
+        color: "#FB8C00"
+    },
+
+    {
+        name: "Other",
+        color: "#AB47BC"
+    }
+];
+
+
+const categoryColors = [
+    "#4285F4",
+    "#34A853",
+    "#FB8C00",
+    "#AB47BC",
+    "#EA4335",
+    "#00ACC1",
+    "#8E24AA",
+    "#6D4C41",
+    "#F4511E",
+    "#3949AB"
+];
+
+
+/* ============================= */
+/* GET CURRENT ACCOUNT CATEGORIES */
+/* ============================= */
+
+function getCurrentCategories() {
+
+    if (!currentAccount) {
+
+        return defaultCategories;
+
+    }
+
+
+    if (
+        !Array.isArray(
+            currentAccount.categories
+        )
+    ) {
+
+        currentAccount.categories =
+            defaultCategories.map(
+                function(category) {
+
+                    return {
+                        name:
+                            category.name,
+
+                        color:
+                            category.color
+                    };
+
+                }
+            );
+
+    }
+
+
+    return currentAccount.categories;
+
+}
+
+
+/* ============================= */
+/* GET COLOR FOR NEW CATEGORY */
+/* ============================= */
+
+function getNewCategoryColor() {
+
+    const categories =
+        getCurrentCategories();
+
+
+    for (
+        let i = 0;
+        i < categoryColors.length;
+        i++
+    ) {
+
+        const colorAlreadyUsed =
+            categories.some(
+                function(category) {
+
+                    return (
+                        category.color ===
+                        categoryColors[i]
+                    );
+
+                }
+            );
+
+
+        if (!colorAlreadyUsed) {
+
+            return categoryColors[i];
+
+        }
+
+    }
+
+
+    /*
+       If all preset colors are used,
+       create another color automatically.
+    */
+
+    const hue =
+        (
+            categories.length * 47
+        ) % 360;
+
+
+    return `hsl(${hue}, 70%, 55%)`;
+
+}
+
+
+/* ============================= */
+/* CATEGORY OPTIONS HTML */
+/* ============================= */
+
+function getCategoryOptionsHTML(
+    selectedCategory = ""
+) {
+
+    const categories =
+        getCurrentCategories();
+
+
+    let html = `
+
+        <option value="">
+            Select a category
+        </option>
+
+    `;
+
+
+    categories.forEach(
+        function(category) {
+
+            html += `
+
+                <option
+                    value="${escapeHTML(
+                        category.name
+                    )}"
+                    ${
+                        category.name ===
+                        selectedCategory
+                            ? "selected"
+                            : ""
+                    }
+                >
+                    ${escapeHTML(
+                        category.name
+                    )}
+                </option>
+
+            `;
+
+        }
+    );
+
+
+    return html;
+
+}
+
 /* ============================= */
 /* ACCOUNT PIN SYSTEM */
 /* ============================= */
@@ -655,6 +845,32 @@ function enterAccountFromCarousel(
 
     expenses =
         account.expenses;
+    
+    
+    if (
+    !Array.isArray(
+        account.categories
+    )
+) {
+
+    account.categories =
+        defaultCategories.map(
+            function(category) {
+
+                return {
+
+                    name:
+                        category.name,
+
+                    color:
+                        category.color
+
+                };
+
+            }
+        );
+
+}
 
 
     darkModeEnabled =
@@ -783,6 +999,33 @@ settingsBtn.onclick = function() {
             </div>
 
 
+                        <!-- GRAPHS -->
+
+            <div
+                class="settings-section"
+                id="graphsSettingsBar"
+                role="button"
+                tabindex="0"
+            >
+
+                <div class="settings-section-info">
+
+                    <h2>Graphs</h2>
+
+                    <p>
+                        View expense graphs and manage categories.
+                    </p>
+
+                </div>
+
+
+                <div class="settings-arrow">
+                    →
+                </div>
+
+            </div>
+
+
             <!-- DELETE ACCOUNT -->
 
             <div class="settings-section">
@@ -878,7 +1121,418 @@ settingsBtn.onclick = function() {
             logoutAccount
         );
 
+
+    /* ============================= */
+    /* GRAPHS */
+    /* ============================= */
+
+document
+    .getElementById(
+        "graphsSettingsBar"
+    )
+    .addEventListener(
+        "click",
+        showGraphsSettings
+    );
+
+
+document
+    .getElementById(
+        "graphsSettingsBar"
+    )
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                event.preventDefault();
+
+                showGraphsSettings();
+
+            }
+
+        }
+    );
+
 };
+
+
+/* ============================= */
+/* GRAPHS SETTINGS */
+/* ============================= */
+
+function showGraphsSettings() {
+
+    const categories =
+        getCurrentCategories();
+
+
+    let categoryHTML = "";
+
+
+    categories.forEach(
+        function(category) {
+
+            categoryHTML += `
+
+                <button
+                    class="category-option-item"
+                    type="button"
+                >
+
+                    <span
+                        class="category-color-dot"
+                        style="
+                            background-color:
+                            ${category.color};
+                        "
+                    ></span>
+
+
+                    <span>
+                        ${escapeHTML(
+                            category.name
+                        )}
+                    </span>
+
+                </button>
+
+            `;
+
+        }
+    );
+
+
+    content.innerHTML = `
+
+        <div class="settings-page">
+
+            <button
+                class="history-back-button"
+                id="graphsBackButton"
+            >
+                ← Back
+            </button>
+
+
+            <h1>Graphs</h1>
+
+
+            <!-- CATEGORY OPTIONS -->
+
+            <div class="settings-section">
+
+                <div
+                    class="settings-section-info"
+                >
+
+                    <h2>
+                        Category Options
+                    </h2>
+
+                    <p>
+                        Manage the categories
+                        used throughout your
+                        expense tracker.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="category-options-container">
+
+                ${categoryHTML}
+
+
+                <button
+                    class="category-add-button"
+                    id="addCategoryButton"
+                    type="button"
+                >
+
+                    <span>+</span>
+
+                    Add category
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /* ============================= */
+    /* BACK */
+/* ============================= */
+
+    document
+        .getElementById(
+            "graphsBackButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                settingsBtn.click();
+
+            }
+        );
+
+
+    /* ============================= */
+    /* ADD CATEGORY */
+/* ============================= */
+
+    document
+        .getElementById(
+            "addCategoryButton"
+        )
+        .addEventListener(
+            "click",
+            showAddCategoryPopup
+        );
+
+}
+
+
+/* ============================= */
+/* ADD CATEGORY POPUP */
+/* ============================= */
+
+function showAddCategoryPopup() {
+
+    const existingOverlay =
+        document.getElementById(
+            "addCategoryOverlay"
+        );
+
+
+    if (existingOverlay) {
+
+        existingOverlay.remove();
+
+    }
+
+
+    const overlay =
+        document.createElement("div");
+
+
+    overlay.id =
+        "addCategoryOverlay";
+
+
+    overlay.className =
+        "category-popup-overlay";
+
+
+    overlay.innerHTML = `
+
+        <div
+            class="category-popup"
+        >
+
+            <h2>
+                New Category
+            </h2>
+
+
+            <input
+                type="text"
+                id="newCategoryInput"
+                placeholder="Write new category"
+                maxlength="40"
+            >
+
+
+            <div
+                class="category-popup-buttons"
+            >
+
+                <button
+                    type="button"
+                    id="cancelCategoryButton"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    id="saveCategoryButton"
+                >
+                    Save
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    const input =
+        document.getElementById(
+            "newCategoryInput"
+        );
+
+
+    input.focus();
+
+
+    /* ============================= */
+    /* CANCEL */
+/* ============================= */
+
+    document
+        .getElementById(
+            "cancelCategoryButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                overlay.remove();
+
+            }
+        );
+
+
+    /* ============================= */
+    /* SAVE */
+/* ============================= */
+
+    document
+        .getElementById(
+            "saveCategoryButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                const newCategoryName =
+                    input.value.trim();
+
+
+                if (
+                    newCategoryName === ""
+                ) {
+
+                    input.focus();
+
+                    return;
+
+                }
+
+
+                const categories =
+                    getCurrentCategories();
+
+
+                const alreadyExists =
+                    categories.some(
+                        function(category) {
+
+                            return (
+                                category.name
+                                    .toLowerCase() ===
+                                newCategoryName
+                                    .toLowerCase()
+                            );
+
+                        }
+                    );
+
+
+                if (alreadyExists) {
+
+                    input.value = "";
+
+                    input.placeholder =
+                        "Category already exists";
+
+                    input.focus();
+
+                    return;
+
+                }
+
+
+                const newCategory = {
+
+                    name:
+                        newCategoryName,
+
+                    color:
+                        getNewCategoryColor()
+
+                };
+
+
+                categories.push(
+                    newCategory
+                );
+
+
+                if (currentAccount) {
+
+                    currentAccount.categories =
+                        categories;
+
+                }
+
+
+                overlay.remove();
+
+
+                showGraphsSettings();
+
+
+                const message =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                message.className =
+                    "success-message category-added-message";
+
+
+                message.textContent =
+                    "Category added successfully";
+
+
+                content.appendChild(
+                    message
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        message.remove();
+
+                    },
+                    3000
+                );
+
+            }
+        );
+
+}
 
 /* ============================= */
 /* NEW EXPENSE */
@@ -1120,6 +1774,9 @@ function showExpenseForm() {
 
                     <select id="expenseCategory">
 
+                        ${getCategoryOptionsHTML()}
+
+                    </select>
                         <option value="">
                             Select a category
                         </option>
@@ -2077,11 +2734,7 @@ function showGraphs() {
 /* EXPENSE HISTORY */
 /* ============================= */
 
-let historyViewMode = "compact";
-
-function showExpenseHistory(viewMode = historyViewMode) {
-
-    historyViewMode = viewMode;
+function showExpenseHistory() {
 
     if (expenses.length === 0) {
 
@@ -2108,155 +2761,32 @@ function showExpenseHistory(viewMode = historyViewMode) {
         `;
 
 
+        /* EMPTY HISTORY BACK BUTTON */
+
         document
-    .getElementById("historyBackButton")
-    .addEventListener(
-        "click",
-        function() {
+            .getElementById("historyBackButton")
+            .addEventListener(
+                "click",
+                function() {
 
-            showHome();
-
-        }
-    );
-
-return;
-
-    } else {
-
-        let cardsHTML = "";
-
-
-        /* ============================= */
-        /* DETAILED VIEW */
-        /* ============================= */
-
-        if (viewMode === "detailed") {
-
-            expenses.forEach(
-                function(expense, index) {
-
-                    cardsHTML += `
-
-                        <div
-    class="expense-history-card"
-    data-expense-index="${index}"
->
-
-    <div class="history-card-top">
-
-        <h2>
-            ${escapeHTML(
-                expense.name
-            )}
-        </h2>
-
-        <div class="history-rate">
-            $${expense.rate}
-        </div>
-
-        <button
-            class="expense-options-button"
-            type="button"
-            data-expense-index="${index}"
-            aria-label="Expense options"
-        >
-            <i class="fa-solid fa-ellipsis-vertical"></i>
-        </button>
-
-    </div>
-
-    <div
-        class="expense-options-menu"
-        data-menu-index="${index}"
-    >
-
-        <button
-            class="expense-option-edit"
-            type="button"
-        >
-            Edit
-        </button>
-
-        <button
-            class="expense-option-delete"
-            type="button"
-        >
-            Delete
-        </button>
-
-    </div>
-
-
-                            <div class="history-details">
-
-                                <div>
-
-                                    <span>Date</span>
-
-                                    <strong>
-                                        ${formatDate(
-                                            expense.date
-                                        )}
-                                    </strong>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>Time</span>
-
-                                    <strong>
-                                        ${formatTime(
-                                            expense.time
-                                        )}
-                                    </strong>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>Person who made this expense</span>
-
-                                    <strong>
-                                        ${escapeHTML(
-                                            expense.familyMember
-                                        )}
-                                    </strong>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>Category</span>
-
-                                    <strong>
-                                        ${escapeHTML(
-                                            expense.category
-                                        )}
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    `;
+                    showHome();
 
                 }
             );
 
-        }
+
+        return;
+
+    }
 
 
-        /* ============================= */
-        /* COMPACT VIEW */
-        /* ============================= */
+    let cardsHTML = "";
 
-        else {
+
+    /* ============================= */
+    /* DEFAULT COMPACT EXPENSE LIST */
+    /* ============================= */
+
     expenses.forEach(
         function(expense, index) {
 
@@ -2305,6 +2835,7 @@ return;
 
                     </div>
 
+
                     <div
                         class="expense-options-menu"
                         data-menu-index="${index}"
@@ -2316,6 +2847,7 @@ return;
                         >
                             Edit
                         </button>
+
 
                         <button
                             class="expense-option-delete"
@@ -2333,136 +2865,59 @@ return;
         }
     );
 
-}
+
+    content.innerHTML = `
+
+        <div class="history-page">
+
+            <button
+                class="history-back-button"
+                id="historyBackButton"
+            >
+                ← Back
+            </button>
 
 
-        content.innerHTML = `
-
-            <div class="history-page">
-
-                <button
-                    class="history-back-button"
-                    id="historyBackButton"
-                >
-                    ← Back
-                </button>
+            <h1>Expense History</h1>
 
 
-                <h1>Expense History</h1>
+            <p class="expense-count">
+
+                ${expenses.length}
+
+                ${
+                    expenses.length === 1
+                        ? "expense"
+                        : "expenses"
+                }
+
+            </p>
 
 
-                <p class="expense-count">
+            <div class="history-container">
 
-                    ${expenses.length}
-
-                    ${
-                        expenses.length === 1
-                            ? "expense"
-                            : "expenses"
-                    }
-
-                </p>
+                <div class="history-left-line"></div>
 
 
-                <!-- VIEW OPTIONS -->
+                <div class="history-cards">
 
-                <div class="history-view-options">
-
-                    <button
-                        class="history-view-button ${
-                            viewMode === "detailed"
-                                ? "active"
-                                : ""
-                        }"
-                        id="detailedViewButton"
-                    >
-                        Detailed View
-                    </button>
-
-
-                    <button
-                        class="history-view-button ${
-                            viewMode === "compact"
-                                ? "active"
-                                : ""
-                        }"
-                        id="compactViewButton"
-                    >
-                        Compact View
-                    </button>
+                    ${cardsHTML}
 
                 </div>
 
 
-                <div class="history-container">
-
-                    <div class="history-left-line"></div>
-
-
-                    <div class="history-cards">
-
-                        ${cardsHTML}
-
-                    </div>
-
-
-                    <div class="history-right-line"></div>
-
-                </div>
+                <div class="history-right-line"></div>
 
             </div>
 
-        `;
+        </div>
+
+    `;
 
 
-        /* ============================= */
-        /* DETAILED VIEW BUTTON */
-        /* ============================= */
-
-        document
-            .getElementById("detailedViewButton")
-            .addEventListener(
-                "click",
-                function() {
-
-                    if (viewMode !== "detailed") {
-
-                        showExpenseHistory("detailed");
-
-                    }
-
-                }
-            );
-
-
-        /* ============================= */
-        /* COMPACT VIEW BUTTON */
-        /* ============================= */
-
-        document
-            .getElementById("compactViewButton")
-            .addEventListener(
-                "click",
-                function() {
-
-                    if (viewMode !== "compact") {
-
-                        showExpenseHistory("compact");
-
-                    }
-
-                }
-            );
-
-
-/* ============================= */
-/* EXPENSE CARD / OPTIONS CLICK */
-/* ============================= */
-
-
-/* COMPACT CARD CLICK */
-
-if (viewMode === "compact") {
+    /* ============================= */
+    /* EXPENSE CARD FUNCTIONS */
+    /* ============================= */
 
     document
         .querySelectorAll(
@@ -2470,6 +2925,11 @@ if (viewMode === "compact") {
         )
         .forEach(
             function(card) {
+
+
+                /* ============================= */
+                /* OPEN FULL EXPENSE DETAILS */
+                /* ============================= */
 
                 card.addEventListener(
                     "click",
@@ -2483,96 +2943,107 @@ if (viewMode === "compact") {
                                 ".expense-options-menu"
                             )
                         ) {
+
                             return;
+
                         }
+
 
                         const index =
                             Number(
                                 card.dataset.expenseIndex
                             );
 
+
                         showExpenseDetails(index);
 
                     }
                 );
 
-            }
-        );
 
-}
+                /* ============================= */
+                /* THREE-DOT BUTTON */
+                /* ============================= */
 
-
-/* THREE-DOT OPTIONS */
-/* Works in BOTH Compact and Detailed View */
-
-document
-    .querySelectorAll(
-        ".expense-options-button"
-    )
-    .forEach(
-        function(optionsButton) {
-
-            const card =
-                optionsButton.closest(
-                    ".expense-history-card"
-                );
-
-            if (!card) return;
+                const optionsButton =
+                    card.querySelector(
+                        ".expense-options-button"
+                    );
 
 
-            const optionsMenu =
-                card.querySelector(
-                    ".expense-options-menu"
-                );
-
-            if (!optionsMenu) return;
+                const optionsMenu =
+                    card.querySelector(
+                        ".expense-options-menu"
+                    );
 
 
-            /* Three dots */
+                optionsButton.addEventListener(
+                    "click",
+                    function(event) {
 
-            optionsButton.addEventListener(
-                "click",
-                function(event) {
+                        event.stopPropagation();
 
-                    event.stopPropagation();
 
-                    document
-                        .querySelectorAll(
-                            ".expense-options-menu"
-                        )
-                        .forEach(
-                            function(menu) {
+                        /* Close every other menu */
 
-                                if (
-                                    menu !==
-                                    optionsMenu
-                                ) {
+                        document
+                            .querySelectorAll(
+                                ".expense-options-menu"
+                            )
+                            .forEach(
+                                function(menu) {
+
                                     menu.classList.remove(
                                         "show"
                                     );
-                                }
 
-                            }
+                                }
+                            );
+
+
+                        /* Remove active state from cards */
+
+                        document
+                            .querySelectorAll(
+                                ".expense-history-card.compact"
+                            )
+                            .forEach(
+                                function(otherCard) {
+
+                                    otherCard.classList.remove(
+                                        "menu-open"
+                                    );
+
+                                }
+                            );
+
+
+                        /* Open this menu */
+
+                        optionsMenu.classList.add(
+                            "show"
                         );
 
 
-                    optionsMenu.classList.toggle(
-                        "show"
-                    );
+                        /* Put this card above the others */
 
-                }
-            );
+                        card.classList.add(
+                            "menu-open"
+                        );
 
-
-            /* Edit */
-
-            const editButton =
-                card.querySelector(
-                    ".expense-option-edit"
+                    }
                 );
 
 
-            if (editButton) {
+                /* ============================= */
+                /* EDIT */
+                /* ============================= */
+
+                const editButton =
+                    card.querySelector(
+                        ".expense-option-edit"
+                    );
+
 
                 editButton.addEventListener(
                     "click",
@@ -2580,32 +3051,38 @@ document
 
                         event.stopPropagation();
 
+
                         const index =
                             Number(
                                 card.dataset.expenseIndex
                             );
 
+
                         optionsMenu.classList.remove(
                             "show"
                         );
+
+
+                        card.classList.remove(
+                            "menu-open"
+                        );
+
 
                         showEditExpensePopup(index);
 
                     }
                 );
 
-            }
 
+                /* ============================= */
+                /* DELETE */
+                /* ============================= */
 
-            /* Delete */
+                const deleteButton =
+                    card.querySelector(
+                        ".expense-option-delete"
+                    );
 
-            const deleteButton =
-                card.querySelector(
-                    ".expense-option-delete"
-                );
-
-
-            if (deleteButton) {
 
                 deleteButton.addEventListener(
                     "click",
@@ -2613,14 +3090,22 @@ document
 
                         event.stopPropagation();
 
+
                         const index =
                             Number(
                                 card.dataset.expenseIndex
                             );
 
+
                         optionsMenu.classList.remove(
                             "show"
                         );
+
+
+                        card.classList.remove(
+                            "menu-open"
+                        );
+
 
                         showDeleteExpensePopup(index);
 
@@ -2628,9 +3113,8 @@ document
                 );
 
             }
+        );
 
-        }
-    );
 
     /* ============================= */
     /* HISTORY BACK BUTTON */
@@ -2647,9 +3131,7 @@ document
             }
         );
 
-    }
 }
-
 
 /* ============================= */
 /* EXPENSE FULL DETAILS */
@@ -2778,9 +3260,7 @@ function showExpenseDetails(index) {
             "click",
             function() {
 
-                showExpenseHistory(
-                    historyViewMode
-                );
+                showExpenseHistory();
 
             }
         );
@@ -3070,26 +3550,14 @@ function showEditExpensePopup(index) {
                     </label>
 
                     <select
-                        id="editExpenseCategory"
-                    >
+    id="editExpenseCategory"
+>
 
-                        <option value="Electrical">
-                            Electrical
-                        </option>
+    ${getCategoryOptionsHTML(
+        expense.category
+    )}
 
-                        <option value="Household">
-                            Household
-                        </option>
-
-                        <option value="Furniture">
-                            Furniture
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
+</select>
 
                 </div>
 
@@ -4224,17 +4692,34 @@ if (availablePIN === null) {
 /* ============================= */
         const newAccount = {
 
-            username: username,
+    username: username,
 
-            password: password,
+    password: password,
 
-            pin: String(availablePIN),
+    pin: String(availablePIN),
 
-            expenses: [],
+    expenses: [],
 
-            darkMode: false
+    darkMode: false,
 
-        };
+    categories:
+        defaultCategories.map(
+            function(category) {
+
+                return {
+
+                    name:
+                        category.name,
+
+                    color:
+                        category.color
+
+                };
+
+            }
+        )
+
+};
 
 
 /* Store the account itself */
